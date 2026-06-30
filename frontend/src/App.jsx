@@ -1,0 +1,126 @@
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { useAuth } from './context/AuthContext'
+
+// Public Pages
+import HomePage from './pages/HomePage'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+import DoctorListing from './pages/DoctorListing'
+import DoctorProfile from './pages/DoctorProfile'
+import AboutPage from './pages/AboutPage'
+import ContactPage from './pages/ContactPage'
+import ForgotPassword from './pages/ForgotPassword'
+
+// Protected Pages
+import BookAppointment from './pages/BookAppointment'
+import PatientDashboard from './pages/PatientDashboard'
+import MyAppointments from './pages/MyAppointments'
+import PatientProfile from './pages/PatientProfile'
+import DoctorDashboard from './pages/DoctorDashboard'
+import ManageAppointments from './pages/ManageAppointments'
+import SetAvailability from './pages/SetAvailability'
+import AdminDashboard from './pages/AdminDashboard'
+import Messages from './pages/Messages'
+
+const ProtectedRoute = ({ children, allowedRoles }) => {
+  const { user, isAuthenticated } = useAuth()
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />
+  }
+
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    // Redirect to their respective dashboard if they don't have permission
+    if (user.role === 'doctor') return <Navigate to="/doctor/dashboard" replace />
+    if (user.role === 'admin') return <Navigate to="/admin/dashboard" replace />
+    return <Navigate to="/patient/dashboard" replace />
+  }
+
+  return children
+}
+
+export default function App() {
+  return (
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={<HomePage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/contact" element={<ContactPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/doctors" element={<DoctorListing />} />
+      <Route path="/doctors/:id" element={<DoctorProfile />} />
+
+      {/* Protected Routes - Patient */}
+      <Route path="/book/:id" element={
+        <ProtectedRoute allowedRoles={['patient']}>
+          <BookAppointment />
+        </ProtectedRoute>
+      } />
+      <Route path="/patient/dashboard" element={
+        <ProtectedRoute allowedRoles={['patient']}>
+          <PatientDashboard />
+        </ProtectedRoute>
+      } />
+      <Route path="/patient/appointments" element={
+        <ProtectedRoute allowedRoles={['patient']}>
+          <MyAppointments />
+        </ProtectedRoute>
+      } />
+      <Route path="/patient/profile" element={
+        <ProtectedRoute allowedRoles={['patient']}>
+          <PatientProfile />
+        </ProtectedRoute>
+      } />
+      <Route path="/patient/messages" element={
+        <ProtectedRoute allowedRoles={['patient']}>
+          <Messages />
+        </ProtectedRoute>
+      } />
+
+      {/* Protected Routes - Doctor */}
+      <Route path="/doctor/dashboard" element={
+        <ProtectedRoute allowedRoles={['doctor']}>
+          <DoctorDashboard />
+        </ProtectedRoute>
+      } />
+      <Route path="/doctor/appointments" element={
+        <ProtectedRoute allowedRoles={['doctor']}>
+          <ManageAppointments />
+        </ProtectedRoute>
+      } />
+      <Route path="/doctor/availability" element={
+        <ProtectedRoute allowedRoles={['doctor']}>
+          <SetAvailability />
+        </ProtectedRoute>
+      } />
+      <Route path="/doctor/profile" element={
+        <ProtectedRoute allowedRoles={['doctor']}>
+          {/* Using same patient profile component as placeholder for doctor settings */}
+          <PatientProfile />
+        </ProtectedRoute>
+      } />
+      <Route path="/doctor/messages" element={
+        <ProtectedRoute allowedRoles={['doctor']}>
+          <Messages />
+        </ProtectedRoute>
+      } />
+
+      {/* Protected Routes - Admin */}
+      <Route path="/admin/dashboard" element={
+        <ProtectedRoute allowedRoles={['admin']}>
+          <AdminDashboard />
+        </ProtectedRoute>
+      } />
+      <Route path="/admin/messages" element={
+        <ProtectedRoute allowedRoles={['admin']}>
+          <Messages />
+        </ProtectedRoute>
+      } />
+
+      {/* Fallback */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  )
+}
