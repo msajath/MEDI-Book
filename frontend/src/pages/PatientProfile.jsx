@@ -1,13 +1,40 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Sidebar from '../components/Sidebar'
 import Footer from '../components/Footer'
+import { useAuth } from '../context/AuthContext'
 
 export default function PatientProfile() {
+  const { user, setUser } = useAuth()
+  
   const [formData, setFormData] = useState({
-    firstName: 'Alex', lastName: 'Johnson', email: 'alex.johnson@email.com',
-    phone: '+1 (555) 123-4567', dob: '1990-03-15', gender: 'Male',
-    bloodType: 'O+', address: '123 Health Street, Medical City, MC 10001',
+    firstName: '', 
+    lastName: '', 
+    email: '',
+    phone: '', 
+    dob: '', 
+    gender: '',
+    bloodType: '', 
+    address: '',
   })
+  
+  const [isSaving, setIsSaving] = useState(false)
+  const [message, setMessage] = useState({ type: '', text: '' })
+
+  useEffect(() => {
+    if (user) {
+      const nameParts = (user.name || '').split(' ')
+      setFormData({
+        firstName: nameParts[0] || '',
+        lastName: nameParts.slice(1).join(' ') || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        dob: user.dob || '',
+        gender: user.gender || 'Other',
+        bloodType: user.bloodType || 'Unknown',
+        address: user.address || ''
+      })
+    }
+  }, [user])
   
   const [profilePicture, setProfilePicture] = useState(null)
   const fileInputRef = useRef(null)
@@ -24,6 +51,43 @@ export default function PatientProfile() {
   }
 
   const handleChange = (field, value) => setFormData({ ...formData, [field]: value })
+
+  const handleSave = async () => {
+    setIsSaving(true)
+    setMessage({ type: '', text: '' })
+    try {
+      const token = localStorage.getItem('token')
+      const response = await fetch('http://localhost:5000/api/auth/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          name: `${formData.firstName} ${formData.lastName}`.trim(),
+          phone: formData.phone,
+          dob: formData.dob,
+          gender: formData.gender,
+          bloodType: formData.bloodType,
+          address: formData.address,
+        })
+      })
+      
+      const data = await response.json()
+      if (data.success) {
+        setUser(data.user) // Update context with new user data
+        setMessage({ type: 'success', text: 'Profile updated successfully!' })
+        setTimeout(() => setMessage({ type: '', text: '' }), 3000)
+      } else {
+        setMessage({ type: 'error', text: data.message || 'Error updating profile.' })
+      }
+    } catch (err) {
+      console.error(err)
+      setMessage({ type: 'error', text: 'An error occurred while saving.' })
+    } finally {
+      setIsSaving(false)
+    }
+  }
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-surface">
@@ -69,7 +133,23 @@ export default function PatientProfile() {
                 <div className="flex flex-col gap-2"><label className="text-sm font-medium text-navy">Blood Type</label><select className="w-full p-3 border-[1.5px] border-slate-300 rounded-xl text-base text-on-surface bg-white focus:border-primary outline-none transition-colors" value={formData.bloodType} onChange={(e) => handleChange('bloodType', e.target.value)}><option>O+</option><option>O-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option></select></div>
                 <div className="flex flex-col gap-2 sm:col-span-2"><label className="text-sm font-medium text-navy">Address</label><textarea className="w-full p-3 border-[1.5px] border-slate-300 rounded-xl text-base text-on-surface bg-white focus:border-primary outline-none transition-colors" rows="3" value={formData.address} onChange={(e) => handleChange('address', e.target.value)} /></div>
               </div>
-              <div className="flex gap-3 mt-6 pt-5 border-t border-surface-container-high"><button className="px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-dark transition-colors">Save Changes</button><button className="px-5 py-2.5 text-navy font-semibold bg-transparent hover:bg-surface-container rounded-lg transition-colors">Cancel</button></div>
+              
+              {message.text && (
+                <div className={`mt-4 p-3 rounded-lg text-sm ${message.type === 'success' ? 'bg-success-bg text-success' : 'bg-error-bg text-error'}`}>
+                  {message.text}
+                </div>
+              )}
+              
+              <div className="flex gap-3 mt-6 pt-5 border-t border-surface-container-high">
+                <button 
+                  onClick={handleSave} 
+                  disabled={isSaving}
+                  className={`px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-dark transition-colors ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}
+                >
+                  {isSaving ? 'Saving...' : 'Save Changes'}
+                </button>
+                <button className="px-5 py-2.5 text-navy font-semibold bg-transparent hover:bg-surface-container rounded-lg transition-colors">Cancel</button>
+              </div>
             </div>
 
             <div className="p-6 bg-white rounded-xl shadow-sm border border-outline-variant">

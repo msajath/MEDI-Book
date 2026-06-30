@@ -31,6 +31,22 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    dob: {
+      type: String,
+      default: '',
+    },
+    gender: {
+      type: String,
+      default: 'Other',
+    },
+    bloodType: {
+      type: String,
+      default: 'Unknown',
+    },
+    address: {
+      type: String,
+      default: '',
+    },
     avatar: {
       type: String,
       default: null,

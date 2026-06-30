@@ -164,6 +164,10 @@ router.get('/me', protect, async (req, res) => {
         email: user.email,
         role: user.role,
         phone: user.phone,
+        dob: user.dob,
+        gender: user.gender,
+        bloodType: user.bloodType,
+        address: user.address,
         avatar: user.avatar,
         createdAt: user.createdAt,
         ...(doctorProfile && { doctorProfile }),
@@ -181,12 +185,16 @@ router.get('/me', protect, async (req, res) => {
 // ──────────────────────────────────────────────
 router.put('/profile', protect, async (req, res) => {
   try {
-    const { name, phone, email } = req.body;
+    const { name, phone, email, dob, gender, bloodType, address } = req.body;
 
     const user = await User.findById(req.user._id);
     if (name) user.name = name;
     if (phone) user.phone = phone;
     if (email) user.email = email;
+    if (dob) user.dob = dob;
+    if (gender) user.gender = gender;
+    if (bloodType) user.bloodType = bloodType;
+    if (address) user.address = address;
 
     await user.save();
 
@@ -198,6 +206,10 @@ router.put('/profile', protect, async (req, res) => {
         email: user.email,
         role: user.role,
         phone: user.phone,
+        dob: user.dob,
+        gender: user.gender,
+        bloodType: user.bloodType,
+        address: user.address,
         avatar: user.avatar,
       },
     });
