@@ -86,9 +86,14 @@ router.get('/my', protect, async (req, res) => {
     const formatted = appointments.map((appt) => {
       if (req.user.role === 'patient') {
         return {
+          _id: appt._id,
           id: appt._id,
-          doctor: appt.doctor?.user?.name || 'Unknown Doctor',
-          specialty: appt.doctor?.specialty || '',
+          doctor: {
+            _id: appt.doctor?._id,
+            name: appt.doctor?.user?.name || 'Unknown Doctor',
+            specialty: appt.doctor?.specialty || '',
+          },
+          doctorId: appt.doctor?._id,
           date: appt.date,
           time: appt.time,
           status: appt.status,
@@ -110,6 +115,32 @@ router.get('/my', protect, async (req, res) => {
     });
 
     res.json({ success: true, count: formatted.length, appointments: formatted });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ──────────────────────────────────────────────
+// @route   PUT /api/appointments/:id/cancel
+// @desc    Cancel an appointment (patient shortcut)
+// @access  Private
+// ──────────────────────────────────────────────
+router.put('/:id/cancel', protect, async (req, res) => {
+  try {
+    const appointment = await Appointment.findById(req.params.id);
+    if (!appointment) {
+      return res.status(404).json({ success: false, message: 'Appointment not found' });
+    }
+
+    const isPatient = appointment.patient.toString() === req.user._id.toString();
+    const isAdmin = req.user.role === 'admin';
+    if (!isPatient && !isAdmin) {
+      return res.status(403).json({ success: false, message: 'Not authorized' });
+    }
+
+    appointment.status = 'cancelled';
+    await appointment.save();
+    res.json({ success: true, appointment });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

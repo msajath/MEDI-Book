@@ -22,7 +22,7 @@ export default function SetAvailability() {
         }
       })
       const userData = await userResponse.json()
-      const doctorId = userData.user?._id || userData._id
+      const doctorId = userData.user?.doctorProfile?._id || userData.user?._id || userData._id
 
       // Fetch availability for this doctor
       const response = await fetch(`http://localhost:5000/api/availability/${doctorId}`, {

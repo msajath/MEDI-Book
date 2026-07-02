@@ -29,7 +29,7 @@ export default function HomePage() {
                 <span className="material-icons-outlined">search</span>
                 Find a Doctor
               </Link>
-              <Link to="/login" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-transparent border-2 border-primary text-primary text-base font-semibold rounded-xl hover:bg-primary hover:text-white transition-all">
+              <Link to="/about" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-transparent border-2 border-primary text-primary text-base font-semibold rounded-xl hover:bg-primary hover:text-white transition-all">
                 Learn More
               </Link>
             </div>
@@ -39,15 +39,15 @@ export default function HomePage() {
               <div className="absolute inset-0 bg-gradient-to-br from-[#e0f2fe] to-[#bae6fd] rounded-[2rem] overflow-hidden">
                 <img src="/images/doctor_female.png" alt="Doctor" className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[90%] object-cover object-bottom" />
               </div>
-              <div className="absolute top-[10%] -left-[5%] bg-white p-4 rounded-2xl shadow-lg flex items-center gap-3 animate-slide-in z-10">
+              <div className="absolute top-[10%] -left-[5%] bg-white p-4 rounded-2xl shadow-lg flex items-center gap-3 animate-float-1 z-10">
                 <span className="material-icons-outlined text-primary text-[32px]">favorite</span>
                 <span className="font-semibold text-navy">Health Monitoring</span>
               </div>
-              <div className="absolute top-[45%] -right-[5%] bg-white p-4 rounded-2xl shadow-lg flex items-center gap-3 animate-slide-in z-10" style={{ animationDelay: '0.2s' }}>
+              <div className="absolute top-[45%] -right-[5%] bg-white p-4 rounded-2xl shadow-lg flex items-center gap-3 animate-float-2 z-10">
                 <span className="material-icons-outlined text-success text-[32px]">verified_user</span>
                 <span className="font-semibold text-navy">Verified Doctors</span>
               </div>
-              <div className="absolute bottom-[15%] left-[10%] bg-white p-4 rounded-2xl shadow-lg flex items-center gap-3 animate-slide-in z-10" style={{ animationDelay: '0.4s' }}>
+              <div className="absolute bottom-[15%] left-[10%] bg-white p-4 rounded-2xl shadow-lg flex items-center gap-3 animate-float-3 z-10">
                 <span className="material-icons-outlined text-amber-500 text-[32px]">schedule</span>
                 <span className="font-semibold text-navy">24/7 Support</span>
               </div>
@@ -144,27 +144,27 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative">
             {/* Horizontal Line for Desktop */}
             <div className="hidden md:block absolute top-[40px] left-[10%] right-[10%] h-[2px] bg-outline-variant/30 -z-10"></div>
-            
+
             <div className="flex flex-col items-center text-center max-w-[300px] relative">
               <div className="w-[80px] h-[80px] rounded-full bg-primary text-white flex items-center justify-center text-3xl font-bold mb-6 border-[8px] border-white shadow-sm z-10">1</div>
               <h3 className="text-xl font-semibold text-navy mb-3">Find Your Specialist</h3>
               <p className="text-base text-navy-muted leading-relaxed">Search by specialty, location, or insurance provider to find the right doctor for your needs.</p>
             </div>
-            
+
             <div className="md:hidden text-primary my-4">
               <span className="material-icons-outlined text-[32px] rotate-90">arrow_forward</span>
             </div>
-            
+
             <div className="flex flex-col items-center text-center max-w-[300px] relative">
               <div className="w-[80px] h-[80px] rounded-full bg-primary text-white flex items-center justify-center text-3xl font-bold mb-6 border-[8px] border-white shadow-sm z-10">2</div>
               <h3 className="text-xl font-semibold text-navy mb-3">Pick a Suitable Slot</h3>
               <p className="text-base text-navy-muted leading-relaxed">View real-time availability and select a date and time that fits perfectly into your schedule.</p>
             </div>
-            
+
             <div className="md:hidden text-primary my-4">
               <span className="material-icons-outlined text-[32px] rotate-90">arrow_forward</span>
             </div>
-            
+
             <div className="flex flex-col items-center text-center max-w-[300px] relative">
               <div className="w-[80px] h-[80px] rounded-full bg-primary text-white flex items-center justify-center text-3xl font-bold mb-6 border-[8px] border-white shadow-sm z-10">3</div>
               <h3 className="text-xl font-semibold text-navy mb-3">Get Confirmed</h3>

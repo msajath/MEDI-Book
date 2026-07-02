@@ -46,3 +46,18 @@
     @apply font-sans bg-accent-blue text-on-surface antialiased;
   }
 }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@utility animate-float-1 {
+  animation: float 3.5s ease-in-out infinite;
+}
+@utility animate-float-2 {
+  animation: float 4s ease-in-out infinite 0.8s;
+}
+@utility animate-float-3 {
+  animation: float 4.5s ease-in-out infinite 1.5s;
+}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import StatusBadge from '../components/StatusBadge'
 import Footer from '../components/Footer'
@@ -9,6 +10,7 @@ export default function MyAppointments() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const tabs = ['all', 'confirmed', 'pending', 'cancelled']
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetchAppointments()
@@ -31,6 +33,27 @@ export default function MyAppointments() {
       setError(err.message)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleCancel = async (apptId) => {
+    if (!window.confirm('Are you sure you want to cancel this appointment?')) return
+    try {
+      const token = localStorage.getItem('token')
+      const response = await fetch(`http://localhost:5000/api/appointments/${apptId}/cancel`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      if (response.ok) {
+        setAppointments(prev => prev.map(a =>
+          (a._id || a.id) === apptId ? { ...a, status: 'cancelled' } : a
+        ))
+      } else {
+        alert('Failed to cancel appointment')
+      }
+    } catch (err) {
+      console.error('Cancel error:', err)
+      alert('Error cancelling appointment')
     }
   }
 
@@ -104,8 +127,18 @@ export default function MyAppointments() {
                         <div className="flex gap-2">
                           {appt.status !== 'cancelled' && (
                             <>
-                              <button className="px-3 py-1.5 text-xs font-semibold text-primary bg-transparent hover:bg-primary-fixed rounded-lg transition-colors">Reschedule</button>
-                              <button className="px-3 py-1.5 text-xs font-semibold text-red-600 bg-transparent hover:bg-red-50 rounded-lg transition-colors">Cancel</button>
+                              <button
+                                className="px-3 py-1.5 text-xs font-semibold text-primary bg-transparent hover:bg-primary-fixed rounded-lg transition-colors"
+                                onClick={() => {
+                                  const doctorId = appt.doctor?._id || appt.doctor?.id || appt.doctorId
+                                  if (doctorId) navigate(`/doctors/${doctorId}`)
+                                  else alert('Cannot reschedule: doctor info unavailable')
+                                }}
+                              >Reschedule</button>
+                              <button
+                                className="px-3 py-1.5 text-xs font-semibold text-red-600 bg-transparent hover:bg-red-50 rounded-lg transition-colors"
+                                onClick={() => handleCancel(appt._id || appt.id)}
+                              >Cancel</button>
                             </>
                           )}
                         </div>

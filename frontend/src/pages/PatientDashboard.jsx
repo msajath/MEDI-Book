@@ -62,14 +62,14 @@ export default function PatientDashboard() {
           </div>
           <div className="flex flex-col gap-4">
             {recentAppts.map((appt) => (
-              <div key={appt.id} className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-5 px-6 bg-white rounded-xl shadow-sm border border-outline-variant">
+              <div key={appt._id || appt.id} className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-5 px-6 bg-white rounded-xl shadow-sm border border-outline-variant">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-light to-primary text-white flex items-center justify-center font-bold text-sm">
-                    {appt.doctor.split(' ').slice(1).map(n => n[0]).join('')}
+                    {(appt.doctor?.name || appt.doctor || 'D').split(' ').slice(1).map(n => n[0]).join('') || 'D'}
                   </div>
                   <div>
-                    <h4 className="text-base font-semibold text-navy">{appt.doctor}</h4>
-                    <p className="text-sm font-medium text-outline">{appt.specialty}</p>
+                    <h4 className="text-base font-semibold text-navy">{appt.doctor?.name || appt.doctor || 'N/A'}</h4>
+                    <p className="text-sm font-medium text-outline">{appt.doctor?.specialty || appt.specialty || 'N/A'}</p>
                   </div>
                 </div>
                 <div className="flex gap-6">

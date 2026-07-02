@@ -93,7 +93,7 @@ export default function BookAppointment() {
   }
 
   const handleBook = async () => {
-    if (!selectedDate || !selectedSlot) {
+    if (selectedDate === null || !selectedSlot) {
       alert('Please select both date and time')
       return
     }
