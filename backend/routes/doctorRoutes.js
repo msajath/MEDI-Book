@@ -25,6 +25,13 @@ router.get('/', async (req, res) => {
       query.available = available === 'true';
     }
 
+    // 1. First find all verified doctor user IDs
+    const verifiedUsers = await User.find({ role: 'doctor', isVerified: true }).select('_id');
+    const verifiedUserIds = verifiedUsers.map(u => u._id);
+
+    // 2. Add to query
+    query.user = { $in: verifiedUserIds };
+
     let doctors = await Doctor.find(query).populate('user', 'name email avatar isVerified');
 
     // Search by doctor name

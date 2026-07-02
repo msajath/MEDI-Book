@@ -185,7 +185,7 @@ router.get('/me', protect, async (req, res) => {
 // ──────────────────────────────────────────────
 router.put('/profile', protect, async (req, res) => {
   try {
-    const { name, phone, email, dob, gender, bloodType, address, avatar } = req.body;
+    const { name, phone, email, dob, gender, bloodType, address, avatar, specialty, fee, experience, location, bio } = req.body;
 
     const user = await User.findById(req.user._id);
     if (name) user.name = name;
@@ -198,6 +198,20 @@ router.put('/profile', protect, async (req, res) => {
     if (avatar !== undefined) user.avatar = avatar;
 
     await user.save();
+
+    // If user is a doctor, update Doctor profile
+    let doctorProfile = null;
+    if (user.role === 'doctor') {
+      doctorProfile = await Doctor.findOne({ user: user._id });
+      if (doctorProfile) {
+        if (specialty !== undefined) doctorProfile.specialty = specialty;
+        if (fee !== undefined) doctorProfile.fee = fee;
+        if (experience !== undefined) doctorProfile.experience = experience;
+        if (location !== undefined) doctorProfile.location = location;
+        if (bio !== undefined) doctorProfile.bio = bio;
+        await doctorProfile.save();
+      }
+    }
 
     res.json({
       success: true,
@@ -212,6 +226,7 @@ router.put('/profile', protect, async (req, res) => {
         bloodType: user.bloodType,
         address: user.address,
         avatar: user.avatar,
+        ...(doctorProfile && { doctorProfile })
       },
     });
   } catch (error) {

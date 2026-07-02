@@ -21,6 +21,7 @@ import ManageAppointments from './pages/ManageAppointments'
 import SetAvailability from './pages/SetAvailability'
 import AdminDashboard from './pages/AdminDashboard'
 import Messages from './pages/Messages'
+import DoctorProfileSettings from './pages/DoctorProfileSettings'
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, isAuthenticated } = useAuth()
@@ -97,8 +98,7 @@ export default function App() {
       } />
       <Route path="/doctor/profile" element={
         <ProtectedRoute allowedRoles={['doctor']}>
-          {/* Using same patient profile component as placeholder for doctor settings */}
-          <PatientProfile />
+          <DoctorProfileSettings />
         </ProtectedRoute>
       } />
       <Route path="/doctor/messages" element={

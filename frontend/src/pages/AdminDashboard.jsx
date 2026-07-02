@@ -3,6 +3,7 @@ import Sidebar from '../components/Sidebar'
 import StatCard from '../components/StatCard'
 import StatusBadge from '../components/StatusBadge'
 import Footer from '../components/Footer'
+import { specialties } from '../data/mockData'
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -13,6 +14,11 @@ export default function AdminDashboard() {
   })
   const [recentActivity, setRecentActivity] = useState([])
   const [loading, setLoading] = useState(true)
+
+  const [showAddDoctor, setShowAddDoctor] = useState(false)
+  const [newDoctor, setNewDoctor] = useState({ name: '', email: '', password: '', specialty: 'General Practice', fee: 100 })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [message, setMessage] = useState({ type: '', text: '' })
 
   useEffect(() => {
     fetchAdminStats()
@@ -49,6 +55,40 @@ export default function AdminDashboard() {
       setLoading(false)
     }
   }
+
+  const handleAddDoctor = async (e) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setMessage({ type: '', text: '' })
+    try {
+      const token = localStorage.getItem('token')
+      const response = await fetch('http://localhost:5000/api/admin/doctors', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(newDoctor)
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setMessage({ type: 'success', text: 'Doctor added successfully!' })
+        setTimeout(() => {
+          setShowAddDoctor(false)
+          setNewDoctor({ name: '', email: '', password: '', specialty: 'General Practice', fee: 100 })
+          setMessage({ type: '', text: '' })
+          fetchAdminStats() // Refresh stats
+        }, 2000)
+      } else {
+        setMessage({ type: 'error', text: data.message || 'Error adding doctor' })
+      }
+    } catch (err) {
+      setMessage({ type: 'error', text: 'An error occurred' })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-surface">
       <Sidebar />
@@ -58,8 +98,57 @@ export default function AdminDashboard() {
             <h1 className="text-3xl font-semibold text-navy">Admin Overview</h1>
             <p className="mt-2 text-base text-navy-muted">Platform performance and user activity.</p>
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 border border-outline text-navy text-sm font-semibold rounded-lg hover:bg-surface-container-lowest transition-colors" onClick={() => alert("Downloading report...")}><span className="material-icons-outlined text-[18px]">download</span> Download Report</button>
+          <div className="flex gap-3">
+            <button className="flex items-center gap-2 px-4 py-2 border border-outline text-navy text-sm font-semibold rounded-lg hover:bg-surface-container-lowest transition-colors" onClick={() => alert("Downloading report...")}><span className="material-icons-outlined text-[18px]">download</span> Download Report</button>
+            <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-dark transition-colors" onClick={() => setShowAddDoctor(true)}><span className="material-icons-outlined text-[18px]">person_add</span> Add Doctor</button>
+          </div>
         </div>
+
+        {/* Add Doctor Modal */}
+        {showAddDoctor && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-6">
+              <div className="flex justify-between items-center mb-5">
+                <h2 className="text-xl font-semibold text-navy">Add New Doctor</h2>
+                <button onClick={() => setShowAddDoctor(false)} className="text-outline hover:text-navy"><span className="material-icons-outlined">close</span></button>
+              </div>
+              <form onSubmit={handleAddDoctor} className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1">
+                  <label className="text-sm font-medium text-navy">Name (include Dr.)</label>
+                  <input type="text" required className="w-full p-2.5 border-[1.5px] border-slate-300 rounded-lg text-sm" value={newDoctor.name} onChange={(e) => setNewDoctor({...newDoctor, name: e.target.value})} placeholder="Dr. John Doe" />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label className="text-sm font-medium text-navy">Email</label>
+                  <input type="email" required className="w-full p-2.5 border-[1.5px] border-slate-300 rounded-lg text-sm" value={newDoctor.email} onChange={(e) => setNewDoctor({...newDoctor, email: e.target.value})} placeholder="doctor@example.com" />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label className="text-sm font-medium text-navy">Initial Password</label>
+                  <input type="text" required className="w-full p-2.5 border-[1.5px] border-slate-300 rounded-lg text-sm" value={newDoctor.password} onChange={(e) => setNewDoctor({...newDoctor, password: e.target.value})} placeholder="password123" />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label className="text-sm font-medium text-navy">Specialty</label>
+                  <select className="w-full p-2.5 border-[1.5px] border-slate-300 rounded-lg text-sm" value={newDoctor.specialty} onChange={(e) => setNewDoctor({...newDoctor, specialty: e.target.value})}>
+                    {specialties.map(s => <option key={s} value={s}>{s}</option>)}
+                  </select>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label className="text-sm font-medium text-navy">Consultation Fee ($)</label>
+                  <input type="number" required className="w-full p-2.5 border-[1.5px] border-slate-300 rounded-lg text-sm" value={newDoctor.fee} onChange={(e) => setNewDoctor({...newDoctor, fee: Number(e.target.value)})} />
+                </div>
+                
+                {message.text && (
+                  <div className={`p-3 rounded-lg text-sm mt-2 ${message.type === 'success' ? 'bg-success-bg text-success' : 'bg-error-bg text-error'}`}>
+                    {message.text}
+                  </div>
+                )}
+
+                <button type="submit" disabled={isSubmitting} className="w-full mt-2 py-3 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50">
+                  {isSubmitting ? 'Creating...' : 'Create Doctor Profile'}
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard icon="medical_services" value={stats.totalDoctors} label="Registered Doctors" color="var(--color-primary)" trend={5} />
