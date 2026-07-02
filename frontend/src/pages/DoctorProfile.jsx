@@ -4,6 +4,17 @@ import { useAuth } from '../context/AuthContext'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
+// Helper to format a Date as YYYY-MM-DD
+const formatDate = (d) => {
+  const year = d.getFullYear()
+  const month = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+// Fallback time slots
+const defaultTimeSlots = ['04:30 PM', '05:00 PM', '05:30 PM', '06:00 PM', '06:30 PM', '07:00 PM', '07:30 PM', '08:00 PM']
+
 export default function DoctorProfile() {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -15,15 +26,9 @@ export default function DoctorProfile() {
   const [selectedDate, setSelectedDate] = useState(0) // Index of selected day
   const [selectedSlot, setSelectedSlot] = useState(null)
   const [booked, setBooked] = useState(false)
-
-  const today = new Date()
-  const days = Array.from({ length: 7 }, (_, i) => {
-    const d = new Date(today)
-    d.setDate(d.getDate() + i)
-    return d
-  })
-
-  const timeSlots = ['04:30 pm', '05:00 pm', '05:30 pm', '06:00 pm', '06:30 pm', '07:00 pm', '07:30 pm', '08:00 pm']
+  const [timeSlots, setTimeSlots] = useState(defaultTimeSlots)
+  const [bookedSlots, setBookedSlots] = useState([])
+  const [slotsLoading, setSlotsLoading] = useState(false)
 
   useEffect(() => {
     fetchDoctor()
@@ -51,6 +56,47 @@ export default function DoctorProfile() {
     }
   }
 
+  const today = new Date()
+  const days = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(today)
+    d.setDate(d.getDate() + i)
+    return d
+  })
+
+  // Fetch available slots when date is selected
+  const fetchAvailableSlots = async (dateIndex) => {
+    setSlotsLoading(true)
+    setSelectedSlot(null)
+    try {
+      const dateStr = formatDate(days[dateIndex])
+      const response = await fetch(`http://localhost:5000/api/availability/slots/${id}/${dateStr}`)
+      if (response.ok) {
+        const data = await response.json()
+        if (data.success && data.slots) {
+          // Flatten all slots into a single list for this view
+          const allSlots = [
+            ...(data.slots.morning || []),
+            ...(data.slots.afternoon || []),
+            ...(data.slots.evening || [])
+          ]
+          setTimeSlots(allSlots.length > 0 ? allSlots : defaultTimeSlots)
+          setBookedSlots(data.bookedSlots || [])
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching available slots:', err)
+      setTimeSlots(defaultTimeSlots)
+      setBookedSlots([])
+    } finally {
+      setSlotsLoading(false)
+    }
+  }
+
+  const handleDateSelect = (index) => {
+    setSelectedDate(index)
+    fetchAvailableSlots(index)
+  }
+
   const handleBook = async () => {
     if (!isAuthenticated) {
       navigate('/login')
@@ -63,6 +109,7 @@ export default function DoctorProfile() {
     }
 
     try {
+      const dateStr = formatDate(days[selectedDate])
       const response = await fetch('http://localhost:5000/api/appointments', {
         method: 'POST',
         headers: {
@@ -70,13 +117,14 @@ export default function DoctorProfile() {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify({
-          doctor: doctor._id || doctor.id,
-          date: days[selectedDate],
+          doctorId: doctor._id || doctor.id,
+          date: dateStr,
           time: selectedSlot
         })
       })
 
-      if (!response.ok) throw new Error('Failed to book appointment')
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.message || 'Failed to book appointment')
       
       setBooked(true)
       setTimeout(() => navigate('/patient/appointments'), 2000)
@@ -166,7 +214,7 @@ export default function DoctorProfile() {
                     <button 
                       key={i} 
                       className={`flex flex-col items-center justify-center min-w-[64px] h-[80px] rounded-full border transition-all ${selectedDate === i ? 'bg-[#5a66ff] border-[#5a66ff] text-white' : 'bg-white border-slate-200 hover:border-[#5a66ff] text-navy'}`} 
-                      onClick={() => setSelectedDate(i)}
+                      onClick={() => handleDateSelect(i)}
                     >
                       <span className={`text-xs font-semibold mb-1 ${selectedDate === i ? 'text-white' : 'text-slate-500'}`}>{d.toLocaleDateString('en', { weekday: 'short' }).toUpperCase()}</span>
                       <span className="text-[1.1rem] font-medium">{d.getDate()}</span>
@@ -175,15 +223,30 @@ export default function DoctorProfile() {
                 </div>
 
                 <div className="flex flex-wrap gap-4 mb-8">
-                  {timeSlots.map(time => (
-                    <button 
-                      key={time} 
-                      className={`px-6 py-2.5 rounded-full border text-sm transition-all ${selectedSlot === time ? 'bg-[#5a66ff] border-[#5a66ff] text-white' : 'bg-white border-slate-200 text-slate-500 hover:border-[#5a66ff] hover:text-[#5a66ff]'}`} 
-                      onClick={() => setSelectedSlot(time)}
-                    >
-                      {time}
-                    </button>
-                  ))}
+                  {slotsLoading ? (
+                    <p className="text-slate-400 text-sm py-4">Loading available slots...</p>
+                  ) : (
+                    timeSlots.map(time => {
+                      const isBooked = bookedSlots.includes(time)
+                      return (
+                        <button 
+                          key={time} 
+                          disabled={isBooked}
+                          className={`px-6 py-2.5 rounded-full border text-sm transition-all ${
+                            isBooked
+                              ? 'bg-red-50 border-red-200 text-red-400 cursor-not-allowed line-through'
+                              : selectedSlot === time
+                                ? 'bg-[#5a66ff] border-[#5a66ff] text-white'
+                                : 'bg-white border-slate-200 text-slate-500 hover:border-[#5a66ff] hover:text-[#5a66ff]'
+                          }`}
+                          onClick={() => !isBooked && setSelectedSlot(time)}
+                          title={isBooked ? 'Already booked' : `Select ${time}`}
+                        >
+                          {time}
+                        </button>
+                      )
+                    })
+                  )}
                 </div>
 
                 <button 

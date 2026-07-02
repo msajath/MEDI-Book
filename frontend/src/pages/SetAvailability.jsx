@@ -44,7 +44,7 @@ export default function SetAvailability() {
         setSchedule(defaultSchedule)
       } else {
         const data = await response.json()
-        setSchedule(data.availability || data || [])
+        setSchedule(data.schedule || data.availability || [])
       }
       setError(null)
     } catch (err) {
@@ -87,7 +87,7 @@ export default function SetAvailability() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ availability: schedule })
+        body: JSON.stringify({ schedule: schedule })
       })
       if (!response.ok) throw new Error('Failed to save availability')
       alert('Availability updated successfully!')

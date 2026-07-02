@@ -47,8 +47,12 @@ export default function Sidebar() {
 
       {user && (
         <div className="p-5 px-6 flex items-center gap-3 border-b border-outline-variant">
-          <div className="w-11 h-11 rounded-full bg-gradient-to-br from-primary to-primary-dark text-white flex items-center justify-center font-bold text-sm shrink-0">
-            {user.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+          <div className="w-11 h-11 rounded-full bg-gradient-to-br from-primary to-primary-dark text-white flex items-center justify-center font-bold text-sm shrink-0 overflow-hidden">
+            {user.avatar ? (
+              <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+            ) : (
+              user.name.split(' ').map(n => n[0]).join('').slice(0, 2)
+            )}
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-semibold text-navy">{user.name}</span>

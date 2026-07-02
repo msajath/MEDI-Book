@@ -185,7 +185,7 @@ router.get('/me', protect, async (req, res) => {
 // ──────────────────────────────────────────────
 router.put('/profile', protect, async (req, res) => {
   try {
-    const { name, phone, email, dob, gender, bloodType, address } = req.body;
+    const { name, phone, email, dob, gender, bloodType, address, avatar } = req.body;
 
     const user = await User.findById(req.user._id);
     if (name) user.name = name;
@@ -195,6 +195,7 @@ router.put('/profile', protect, async (req, res) => {
     if (gender) user.gender = gender;
     if (bloodType) user.bloodType = bloodType;
     if (address) user.address = address;
+    if (avatar !== undefined) user.avatar = avatar;
 
     await user.save();
 

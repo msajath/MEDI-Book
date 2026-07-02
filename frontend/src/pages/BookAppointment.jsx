@@ -2,7 +2,21 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import { timeSlots } from '../data/mockData'
+
+// Fallback slots used when API returns nothing
+const fallbackSlots = {
+  morning: ['08:00 AM', '08:30 AM', '09:00 AM', '09:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM'],
+  afternoon: ['12:00 PM', '12:30 PM', '01:00 PM', '01:30 PM', '02:00 PM', '02:30 PM', '03:00 PM', '03:30 PM'],
+  evening: ['04:00 PM', '04:30 PM', '05:00 PM', '05:30 PM', '06:00 PM', '06:30 PM'],
+}
+
+// Helper to format a Date as YYYY-MM-DD
+const formatDate = (d) => {
+  const year = d.getFullYear()
+  const month = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
 
 export default function BookAppointment() {
   const { id } = useParams()
@@ -14,6 +28,9 @@ export default function BookAppointment() {
   const [selectedSlot, setSelectedSlot] = useState(null)
   const [activeTab, setActiveTab] = useState('morning')
   const [booked, setBooked] = useState(false)
+  const [availableSlots, setAvailableSlots] = useState(fallbackSlots)
+  const [slotsLoading, setSlotsLoading] = useState(false)
+  const [bookedSlots, setBookedSlots] = useState([])
 
   useEffect(() => {
     fetchDoctor()
@@ -41,6 +58,40 @@ export default function BookAppointment() {
     return d
   })
 
+  // Fetch available slots when a date is selected
+  const fetchAvailableSlots = async (dateIndex) => {
+    setSlotsLoading(true)
+    setSelectedSlot(null) // Reset selected slot when date changes
+    try {
+      const dateStr = formatDate(days[dateIndex])
+      const response = await fetch(`http://localhost:5000/api/availability/slots/${id}/${dateStr}`)
+      if (response.ok) {
+        const data = await response.json()
+        if (data.success && data.slots) {
+          setAvailableSlots(data.slots)
+          setBookedSlots(data.bookedSlots || [])
+        } else {
+          setAvailableSlots(fallbackSlots)
+          setBookedSlots([])
+        }
+      } else {
+        setAvailableSlots(fallbackSlots)
+        setBookedSlots([])
+      }
+    } catch (err) {
+      console.error('Error fetching available slots:', err)
+      setAvailableSlots(fallbackSlots)
+      setBookedSlots([])
+    } finally {
+      setSlotsLoading(false)
+    }
+  }
+
+  const handleDateSelect = (index) => {
+    setSelectedDate(index)
+    fetchAvailableSlots(index)
+  }
+
   const handleBook = async () => {
     if (!selectedDate || !selectedSlot) {
       alert('Please select both date and time')
@@ -48,6 +99,7 @@ export default function BookAppointment() {
     }
 
     try {
+      const dateStr = formatDate(days[selectedDate])
       const response = await fetch('http://localhost:5000/api/appointments', {
         method: 'POST',
         headers: {
@@ -55,13 +107,14 @@ export default function BookAppointment() {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify({
-          doctor: doctor._id,
-          date: days[selectedDate],
+          doctorId: doctor._id || doctor.id,
+          date: dateStr,
           time: selectedSlot
         })
       })
 
-      if (!response.ok) throw new Error('Failed to book appointment')
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.message || 'Failed to book appointment')
       
       setBooked(true)
       setTimeout(() => navigate('/patient/appointments'), 2000)
@@ -142,7 +195,7 @@ export default function BookAppointment() {
                       <button 
                         key={i} 
                         className={`flex flex-col items-center gap-1 p-3 px-4 rounded-xl border-[1.5px] min-w-[72px] transition-all cursor-pointer ${selectedDate === i ? 'bg-primary border-primary text-white' : 'bg-white border-outline-variant text-navy hover:border-primary hover:text-primary'}`} 
-                        onClick={() => setSelectedDate(i)}
+                        onClick={() => handleDateSelect(i)}
                       >
                         <span className={`text-xs font-medium ${selectedDate === i ? 'text-white' : 'text-navy-muted'}`}>{d.toLocaleDateString('en', { weekday: 'short' })}</span>
                         <span className="text-xl font-bold">{d.getDate()}</span>
@@ -155,7 +208,7 @@ export default function BookAppointment() {
                 <div className="p-6 bg-white rounded-xl shadow-sm border border-slate-200">
                   <h2 className="text-xl font-semibold text-navy mb-4">Select Time Slot</h2>
                   <div className="flex flex-wrap gap-3 mb-4">
-                    {Object.keys(timeSlots).map((tab) => (
+                    {Object.keys(availableSlots).map((tab) => (
                       <button 
                         key={tab} 
                         className={`flex items-center gap-2 p-2 px-4 rounded-xl border-[1.5px] text-sm font-medium transition-all cursor-pointer ${activeTab === tab ? 'bg-primary border-primary text-white' : 'bg-white border-outline-variant text-navy-muted hover:border-primary hover:text-primary'}`} 
@@ -166,17 +219,37 @@ export default function BookAppointment() {
                       </button>
                     ))}
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    {timeSlots[activeTab].map((slot) => (
-                      <button 
-                        key={slot} 
-                        className={`p-3 rounded-xl border-[1.5px] text-sm font-medium transition-all cursor-pointer ${selectedSlot === slot ? 'bg-primary border-primary text-white' : 'bg-white border-outline-variant text-navy hover:border-primary hover:text-primary'}`} 
-                        onClick={() => setSelectedSlot(slot)}
-                      >
-                        {slot}
-                      </button>
-                    ))}
-                  </div>
+                  {slotsLoading ? (
+                    <div className="text-center py-6 text-navy-muted text-sm">Loading available slots...</div>
+                  ) : selectedDate === null ? (
+                    <div className="text-center py-6 text-navy-muted text-sm">Please select a date first to see available slots</div>
+                  ) : (availableSlots[activeTab] || []).length === 0 ? (
+                    <div className="text-center py-6 text-navy-muted text-sm">No slots available for this time period</div>
+                  ) : (
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      {(availableSlots[activeTab] || []).map((slot) => {
+                        const isBooked = bookedSlots.includes(slot)
+                        return (
+                          <button 
+                            key={slot} 
+                            disabled={isBooked}
+                            className={`p-3 rounded-xl border-[1.5px] text-sm font-medium transition-all ${
+                              isBooked
+                                ? 'bg-red-50 border-red-200 text-red-400 cursor-not-allowed line-through'
+                                : selectedSlot === slot
+                                  ? 'bg-primary border-primary text-white cursor-pointer'
+                                  : 'bg-white border-outline-variant text-navy hover:border-primary hover:text-primary cursor-pointer'
+                            }`} 
+                            onClick={() => !isBooked && setSelectedSlot(slot)}
+                            title={isBooked ? 'This slot is already booked' : `Select ${slot}`}
+                          >
+                            {slot}
+                            {isBooked && <span className="block text-[10px] mt-0.5 no-underline" style={{textDecoration: 'none'}}>Unavailable</span>}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  )}
                 </div>
               </div>
 

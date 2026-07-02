@@ -19,6 +19,8 @@ export default function PatientProfile() {
   
   const [isSaving, setIsSaving] = useState(false)
   const [message, setMessage] = useState({ type: '', text: '' })
+  const [profilePicture, setProfilePicture] = useState(null)
+  const fileInputRef = useRef(null)
 
   useEffect(() => {
     if (user) {
@@ -33,11 +35,12 @@ export default function PatientProfile() {
         bloodType: user.bloodType || 'Unknown',
         address: user.address || ''
       })
+      // Load existing avatar from user data
+      if (user.avatar) {
+        setProfilePicture(user.avatar)
+      }
     }
   }, [user])
-  
-  const [profilePicture, setProfilePicture] = useState(null)
-  const fileInputRef = useRef(null)
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0]
@@ -70,6 +73,7 @@ export default function PatientProfile() {
           gender: formData.gender,
           bloodType: formData.bloodType,
           address: formData.address,
+          avatar: profilePicture,
         })
       })
       

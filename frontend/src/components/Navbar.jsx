@@ -83,10 +83,14 @@ export default function Navbar() {
           {isAuthenticated ? (
             <div className="relative" ref={dropdownRef}>
               <div 
-                className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary-dark text-white flex items-center justify-center font-semibold text-sm cursor-pointer hover:scale-110 transition-transform select-none"
+                className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary-dark text-white flex items-center justify-center font-semibold text-sm cursor-pointer hover:scale-110 transition-transform select-none overflow-hidden"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
-                {user.name.charAt(0).toUpperCase()}
+                {user.avatar ? (
+                  <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                ) : (
+                  user.name.charAt(0).toUpperCase()
+                )}
               </div>
 
               {/* Dropdown Menu */}
