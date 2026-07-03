@@ -21,6 +21,7 @@ import SetAvailability from './pages/SetAvailability'
 import AdminDashboard from './pages/AdminDashboard'
 import Messages from './pages/Messages'
 import DoctorProfileSettings from './pages/DoctorProfileSettings'
+import MedicalRecords from './pages/MedicalRecords'
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, isAuthenticated } = useAuth()
@@ -66,6 +67,11 @@ export default function App() {
       <Route path="/patient/profile" element={
         <ProtectedRoute allowedRoles={['patient']}>
           <PatientProfile />
+        </ProtectedRoute>
+      } />
+      <Route path="/patient/records" element={
+        <ProtectedRoute allowedRoles={['patient']}>
+          <MedicalRecords />
         </ProtectedRoute>
       } />
       <Route path="/patient/messages" element={

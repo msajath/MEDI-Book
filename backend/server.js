@@ -29,6 +29,7 @@ app.use('/api/doctors', require('./routes/doctorRoutes'));
 app.use('/api/appointments', require('./routes/appointmentRoutes'));
 app.use('/api/availability', require('./routes/availabilityRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/records', require('./routes/medicalRecordRoutes'));
 
 // Health check
 app.get('/api/health', (req, res) => {
