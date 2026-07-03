@@ -224,4 +224,59 @@ router.get('/recent-activity', async (req, res) => {
   }
 });
 
+// ──────────────────────────────────────────────
+// @route   GET /api/admin/appointments
+// @desc    Get all appointments with full patient/doctor info
+// @access  Private (admin only)
+// ──────────────────────────────────────────────
+router.get('/appointments', async (req, res) => {
+  try {
+    const appointments = await Appointment.find()
+      .populate({ path: 'doctor', populate: { path: 'user', select: 'name email avatar' } })
+      .populate('patient', 'name email phone avatar')
+      .sort({ createdAt: -1 });
+    res.json({ success: true, count: appointments.length, appointments });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ──────────────────────────────────────────────
+// @route   PUT /api/admin/appointments/:id/status
+// @desc    Admin update appointment status
+// @access  Private (admin only)
+// ──────────────────────────────────────────────
+router.put('/appointments/:id/status', async (req, res) => {
+  try {
+    const { status } = req.body;
+    const appointment = await Appointment.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+    if (!appointment) return res.status(404).json({ success: false, message: 'Appointment not found' });
+    res.json({ success: true, appointment });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ──────────────────────────────────────────────
+// @route   GET /api/admin/records
+// @desc    Get all medical records (admin view)
+// @access  Private (admin only)
+// ──────────────────────────────────────────────
+router.get('/records', async (req, res) => {
+  try {
+    const MedicalRecord = require('../models/MedicalRecord');
+    const records = await MedicalRecord.find()
+      .populate('patient', 'name email')
+      .populate({ path: 'doctor', populate: { path: 'user', select: 'name' } })
+      .sort({ createdAt: -1 });
+    res.json({ success: true, count: records.length, records });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 module.exports = router;

@@ -22,6 +22,10 @@ import AdminDashboard from './pages/AdminDashboard'
 import Messages from './pages/Messages'
 import DoctorProfileSettings from './pages/DoctorProfileSettings'
 import MedicalRecords from './pages/MedicalRecords'
+import AdminLogin from './pages/AdminLogin'
+import AdminAppointments from './pages/AdminAppointments'
+import AdminRecords from './pages/AdminRecords'
+import AdminUsers from './pages/AdminUsers'
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, isAuthenticated } = useAuth()
@@ -37,6 +41,14 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     return <Navigate to="/patient/appointments" replace />
   }
 
+  return children
+}
+
+// Admin-specific protected route
+const AdminRoute = ({ children }) => {
+  const { user, isAuthenticated } = useAuth()
+  if (!isAuthenticated) return <Navigate to="/admin/login" replace />
+  if (user.role !== 'admin') return <Navigate to="/admin/login" replace />
   return children
 }
 
@@ -107,17 +119,12 @@ export default function App() {
         </ProtectedRoute>
       } />
 
-      {/* Protected Routes - Admin */}
-      <Route path="/admin/dashboard" element={
-        <ProtectedRoute allowedRoles={['admin']}>
-          <AdminDashboard />
-        </ProtectedRoute>
-      } />
-      <Route path="/admin/messages" element={
-        <ProtectedRoute allowedRoles={['admin']}>
-          <Messages />
-        </ProtectedRoute>
-      } />
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+      <Route path="/admin/appointments" element={<AdminRoute><AdminAppointments /></AdminRoute>} />
+      <Route path="/admin/records" element={<AdminRoute><AdminRecords /></AdminRoute>} />
+      <Route path="/admin/users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
+      <Route path="/admin/messages" element={<AdminRoute><Messages /></AdminRoute>} />
 
       {/* Fallback */}
       <Route path="*" element={<Navigate to="/" replace />} />

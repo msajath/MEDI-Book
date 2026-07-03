@@ -18,10 +18,10 @@ const doctorLinks = [
 
 const adminLinks = [
   { to: '/admin/dashboard', icon: 'dashboard', label: 'Dashboard' },
-  { to: '/admin/appointments', icon: 'calendar_today', label: 'My Appointments', comingSoon: true },
-  { to: '/admin/records', icon: 'description', label: 'Medical Records', comingSoon: true },
+  { to: '/admin/users', icon: 'group', label: 'Manage Users' },
+  { to: '/admin/appointments', icon: 'calendar_today', label: 'All Appointments' },
+  { to: '/admin/records', icon: 'description', label: 'Medical Records' },
   { to: '/admin/messages', icon: 'mail', label: 'Messages' },
-  { to: '/admin/settings', icon: 'settings', label: 'Settings', comingSoon: true },
 ]
 
 export default function Sidebar() {
@@ -55,7 +55,7 @@ export default function Sidebar() {
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-semibold text-navy">{user.name}</span>
-            <span className="text-xs text-outline">Premium Member</span>
+            <span className="text-xs text-outline">{user.role === 'admin' ? 'System Admin' : user.role === 'doctor' ? 'Doctor' : 'Premium Member'}</span>
           </div>
         </div>
       )}
