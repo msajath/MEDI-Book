@@ -13,7 +13,7 @@ export default function Navbar() {
     if (!user) return '/login'
     if (user.role === 'doctor') return '/doctor/dashboard'
     if (user.role === 'admin') return '/admin/dashboard'
-    return '/patient/dashboard'
+    return '/patient/appointments'
   }
 
   const getProfileLink = () => {

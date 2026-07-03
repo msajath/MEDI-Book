@@ -22,7 +22,7 @@ export default function LoginPage() {
         const userRole = userData.role
         if (userRole === 'doctor') navigate('/doctor/dashboard')
         else if (userRole === 'admin') navigate('/admin/dashboard')
-        else navigate('/patient/dashboard')
+        else navigate('/patient/appointments')
       } else {
         setError('Invalid email or password')
       }

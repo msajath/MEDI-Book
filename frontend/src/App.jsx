@@ -13,7 +13,6 @@ import ForgotPassword from './pages/ForgotPassword'
 
 // Protected Pages
 import BookAppointment from './pages/BookAppointment'
-import PatientDashboard from './pages/PatientDashboard'
 import MyAppointments from './pages/MyAppointments'
 import PatientProfile from './pages/PatientProfile'
 import DoctorDashboard from './pages/DoctorDashboard'
@@ -34,7 +33,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     // Redirect to their respective dashboard if they don't have permission
     if (user.role === 'doctor') return <Navigate to="/doctor/dashboard" replace />
     if (user.role === 'admin') return <Navigate to="/admin/dashboard" replace />
-    return <Navigate to="/patient/dashboard" replace />
+    return <Navigate to="/patient/appointments" replace />
   }
 
   return children
@@ -57,11 +56,6 @@ export default function App() {
       <Route path="/book/:id" element={
         <ProtectedRoute allowedRoles={['patient']}>
           <BookAppointment />
-        </ProtectedRoute>
-      } />
-      <Route path="/patient/dashboard" element={
-        <ProtectedRoute allowedRoles={['patient']}>
-          <PatientDashboard />
         </ProtectedRoute>
       } />
       <Route path="/patient/appointments" element={

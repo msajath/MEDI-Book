@@ -43,7 +43,7 @@ export default function RegisterPage() {
       // Navigate based on role
       if (role === 'doctor') navigate('/doctor/dashboard')
       else if (role === 'admin') navigate('/admin/dashboard')
-      else navigate('/patient/dashboard')
+      else navigate('/patient/appointments')
     } catch (err) {
       setError(err.message || 'Registration failed. Please try again.')
     } finally {

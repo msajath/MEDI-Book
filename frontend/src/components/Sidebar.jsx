@@ -2,7 +2,6 @@ import { NavLink, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 const patientLinks = [
-  { to: '/patient/dashboard', icon: 'dashboard', label: 'Dashboard' },
   { to: '/patient/appointments', icon: 'calendar_today', label: 'My Appointments' },
   { to: '/patient/records', icon: 'description', label: 'Medical Records', comingSoon: true },
   { to: '/patient/messages', icon: 'mail', label: 'Messages' },
