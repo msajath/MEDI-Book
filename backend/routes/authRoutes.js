@@ -209,6 +209,8 @@ router.put('/profile', protect, async (req, res) => {
         if (experience !== undefined) doctorProfile.experience = experience;
         if (location !== undefined) doctorProfile.location = location;
         if (bio !== undefined) doctorProfile.bio = bio;
+        // If email changed by doctor, mark credentials as changed
+        if (email && email !== req.user.email) doctorProfile.credentialsChanged = true;
         await doctorProfile.save();
       }
     }
@@ -262,6 +264,11 @@ router.put(
 
       user.password = req.body.newPassword;
       await user.save();
+
+      // If doctor, mark credentials changed
+      if (user.role === 'doctor') {
+        await Doctor.findOneAndUpdate({ user: user._id }, { credentialsChanged: true });
+      }
 
       res.json({ success: true, message: 'Password updated successfully' });
     } catch (error) {

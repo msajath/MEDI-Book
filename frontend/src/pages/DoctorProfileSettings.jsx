@@ -28,6 +28,9 @@ export default function DoctorProfileSettings() {
   const [message, setMessage] = useState({ type: '', text: '' })
   const [profilePicture, setProfilePicture] = useState(null)
   const fileInputRef = useRef(null)
+  const [pwForm, setPwForm] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' })
+  const [pwSaving, setPwSaving] = useState(false)
+  const [pwMessage, setPwMessage] = useState({ type: '', text: '' })
 
   useEffect(() => {
     if (user) {
@@ -93,6 +96,7 @@ export default function DoctorProfileSettings() {
           gender: formData.gender,
           bloodType: formData.bloodType,
           address: formData.address,
+          email: formData.email,
           avatar: profilePicture,
           specialty: formData.specialty,
           fee: Number(formData.fee),
@@ -115,6 +119,36 @@ export default function DoctorProfileSettings() {
       setMessage({ type: 'error', text: 'An error occurred while saving.' })
     } finally {
       setIsSaving(false)
+    }
+  }
+
+  const handlePasswordChange = async (e) => {
+    e.preventDefault()
+    if (pwForm.newPassword !== pwForm.confirmPassword) {
+      setPwMessage({ type: 'error', text: 'New passwords do not match.' })
+      return
+    }
+    setPwSaving(true)
+    setPwMessage({ type: '', text: '' })
+    try {
+      const token = localStorage.getItem('token')
+      const res = await fetch('http://localhost:5000/api/auth/password', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ currentPassword: pwForm.currentPassword, newPassword: pwForm.newPassword })
+      })
+      const data = await res.json()
+      if (data.success) {
+        setPwMessage({ type: 'success', text: 'Password updated successfully!' })
+        setPwForm({ currentPassword: '', newPassword: '', confirmPassword: '' })
+        setTimeout(() => setPwMessage({ type: '', text: '' }), 3000)
+      } else {
+        setPwMessage({ type: 'error', text: data.message || 'Error updating password.' })
+      }
+    } catch (err) {
+      setPwMessage({ type: 'error', text: 'An error occurred.' })
+    } finally {
+      setPwSaving(false)
     }
   }
 
@@ -187,7 +221,7 @@ export default function DoctorProfileSettings() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-4">
                 <div className="flex flex-col gap-2"><label className="text-sm font-medium text-navy">First Name</label><input className="w-full p-3 border-[1.5px] border-slate-300 rounded-xl text-base text-on-surface bg-white focus:border-primary outline-none transition-colors" value={formData.firstName} onChange={(e) => handleChange('firstName', e.target.value)} /></div>
                 <div className="flex flex-col gap-2"><label className="text-sm font-medium text-navy">Last Name</label><input className="w-full p-3 border-[1.5px] border-slate-300 rounded-xl text-base text-on-surface bg-white focus:border-primary outline-none transition-colors" value={formData.lastName} onChange={(e) => handleChange('lastName', e.target.value)} /></div>
-                <div className="flex flex-col gap-2"><label className="text-sm font-medium text-navy">Email Address</label><input className="w-full p-3 border-[1.5px] border-slate-300 rounded-xl text-base text-on-surface bg-surface-container focus:border-primary outline-none transition-colors" value={formData.email} disabled /><p className="text-xs text-outline mt-1">Email cannot be changed manually for security.</p></div>
+                <div className="flex flex-col gap-2"><label className="text-sm font-medium text-navy">Email Address</label><input className="w-full p-3 border-[1.5px] border-slate-300 rounded-xl text-base text-on-surface bg-white focus:border-primary outline-none transition-colors" value={formData.email} onChange={(e) => handleChange('email', e.target.value)} /><p className="text-xs text-primary mt-1">⚠ Changing this will update your login email.</p></div>
                 <div className="flex flex-col gap-2"><label className="text-sm font-medium text-navy">Phone Number</label><input className="w-full p-3 border-[1.5px] border-slate-300 rounded-xl text-base text-on-surface bg-white focus:border-primary outline-none transition-colors" value={formData.phone} onChange={(e) => handleChange('phone', e.target.value)} /></div>
                 <div className="flex flex-col gap-2 sm:col-span-2"><label className="text-sm font-medium text-navy">Address</label><textarea className="w-full p-3 border-[1.5px] border-slate-300 rounded-xl text-base text-on-surface bg-white focus:border-primary outline-none transition-colors" rows="2" value={formData.address} onChange={(e) => handleChange('address', e.target.value)} /></div>
               </div>
@@ -207,6 +241,64 @@ export default function DoctorProfileSettings() {
                   {isSaving ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>
+            </div>
+
+            {/* Change Password */}
+            <div className="p-6 bg-white rounded-xl shadow-sm border border-outline-variant">
+              <h3 className="text-xl font-semibold text-navy mb-1">Change Password</h3>
+              <p className="text-sm text-navy-muted mb-5">Update your login password. Use a strong password.</p>
+              <form onSubmit={handlePasswordChange} className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-medium text-navy">Current Password</label>
+                  <input
+                    type="password"
+                    required
+                    className="w-full p-3 border-[1.5px] border-slate-300 rounded-xl text-base focus:border-primary outline-none transition-colors"
+                    placeholder="Enter current password"
+                    value={pwForm.currentPassword}
+                    onChange={(e) => setPwForm({ ...pwForm, currentPassword: e.target.value })}
+                  />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-medium text-navy">New Password</label>
+                    <input
+                      type="password"
+                      required
+                      minLength={6}
+                      className="w-full p-3 border-[1.5px] border-slate-300 rounded-xl text-base focus:border-primary outline-none transition-colors"
+                      placeholder="Min. 6 characters"
+                      value={pwForm.newPassword}
+                      onChange={(e) => setPwForm({ ...pwForm, newPassword: e.target.value })}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-medium text-navy">Confirm New Password</label>
+                    <input
+                      type="password"
+                      required
+                      className="w-full p-3 border-[1.5px] border-slate-300 rounded-xl text-base focus:border-primary outline-none transition-colors"
+                      placeholder="Repeat new password"
+                      value={pwForm.confirmPassword}
+                      onChange={(e) => setPwForm({ ...pwForm, confirmPassword: e.target.value })}
+                    />
+                  </div>
+                </div>
+                {pwMessage.text && (
+                  <div className={`p-3 rounded-lg text-sm ${pwMessage.type === 'success' ? 'bg-success-bg text-success' : 'bg-error-bg text-error'}`}>
+                    {pwMessage.text}
+                  </div>
+                )}
+                <div className="pt-2 border-t border-surface-container-high">
+                  <button
+                    type="submit"
+                    disabled={pwSaving}
+                    className="px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-70"
+                  >
+                    {pwSaving ? 'Updating...' : 'Update Password'}
+                  </button>
+                </div>
+              </form>
             </div>
 
           </div>

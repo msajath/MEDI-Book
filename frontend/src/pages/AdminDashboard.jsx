@@ -19,6 +19,7 @@ export default function AdminDashboard() {
   const [newDoctor, setNewDoctor] = useState({ name: '', email: '', password: '', specialty: 'General Practice', fee: 100 })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [message, setMessage] = useState({ type: '', text: '' })
+  const [createdCredentials, setCreatedCredentials] = useState(null) // Store new doctor credentials
 
   useEffect(() => {
     fetchAdminStats()
@@ -72,13 +73,12 @@ export default function AdminDashboard() {
       })
       const data = await response.json()
       if (response.ok) {
-        setMessage({ type: 'success', text: 'Doctor added successfully!' })
-        setTimeout(() => {
-          setShowAddDoctor(false)
-          setNewDoctor({ name: '', email: '', password: '', specialty: 'General Practice', fee: 100 })
-          setMessage({ type: '', text: '' })
-          fetchAdminStats() // Refresh stats
-        }, 2000)
+        // Save credentials to show to admin
+        setCreatedCredentials({ name: newDoctor.name, email: newDoctor.email, password: newDoctor.password })
+        setShowAddDoctor(false)
+        setNewDoctor({ name: '', email: '', password: '', specialty: 'General Practice', fee: 100 })
+        setMessage({ type: '', text: '' })
+        fetchAdminStats()
       } else {
         setMessage({ type: 'error', text: data.message || 'Error adding doctor' })
       }
@@ -146,6 +146,68 @@ export default function AdminDashboard() {
                   {isSubmitting ? 'Creating...' : 'Create Doctor Profile'}
                 </button>
               </form>
+            </div>
+          </div>
+        )}
+
+        {/* Credentials Display Modal - shown after doctor is created */}
+        {createdCredentials && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
+                  <span className="material-icons-outlined text-green-600 text-[22px]">check_circle</span>
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold text-navy">Doctor Created!</h2>
+                  <p className="text-sm text-navy-muted">Share these credentials with the doctor</p>
+                </div>
+              </div>
+
+              <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl mb-4 flex items-start gap-2">
+                <span className="material-icons-outlined text-amber-600 text-[18px] mt-0.5 shrink-0">warning</span>
+                <p className="text-xs text-amber-700">Save these credentials now. The doctor must use these to log in and should change their password after first login.</p>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-1">
+                  <label className="text-xs font-semibold text-outline uppercase tracking-wider">Doctor Name</label>
+                  <p className="text-navy font-semibold">{createdCredentials.name}</p>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-semibold text-outline uppercase tracking-wider">Login Email</label>
+                  <div className="flex items-center justify-between px-4 py-2.5 bg-surface rounded-xl border border-outline-variant">
+                    <span className="text-navy text-sm font-mono">{createdCredentials.email}</span>
+                    <button
+                      onClick={() => { navigator.clipboard.writeText(createdCredentials.email); }}
+                      className="text-primary hover:text-primary-dark"
+                      title="Copy email"
+                    >
+                      <span className="material-icons-outlined text-[18px]">content_copy</span>
+                    </button>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-semibold text-outline uppercase tracking-wider">Initial Password</label>
+                  <div className="flex items-center justify-between px-4 py-2.5 bg-surface rounded-xl border border-outline-variant">
+                    <span className="text-navy text-sm font-mono">{createdCredentials.password}</span>
+                    <button
+                      onClick={() => { navigator.clipboard.writeText(createdCredentials.password); }}
+                      className="text-primary hover:text-primary-dark"
+                      title="Copy password"
+                    >
+                      <span className="material-icons-outlined text-[18px]">content_copy</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                className="w-full mt-5 py-3 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-dark transition-colors"
+                onClick={() => setCreatedCredentials(null)}
+              >
+                Done — I've Saved the Credentials
+              </button>
             </div>
           </div>
         )}

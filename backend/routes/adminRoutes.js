@@ -119,7 +119,8 @@ router.post('/doctors', async (req, res) => {
     const doctor = await Doctor.create({
       user: user._id,
       specialty: specialty || 'General Practice',
-      fee: fee || 100
+      fee: fee || 100,
+      tempPassword: password, // Store initial password so admin can view it
     });
 
     // 4. Create default Availability
@@ -139,6 +140,43 @@ router.post('/doctors', async (req, res) => {
     });
 
     res.status(201).json({ success: true, message: 'Doctor added successfully', user, doctor });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ──────────────────────────────────────────────
+// @route   GET /api/admin/doctors-detail
+// @desc    Get all doctors with full detail including credentials
+// @access  Private (admin only)
+// ──────────────────────────────────────────────
+router.get('/doctors-detail', async (req, res) => {
+  try {
+    const doctors = await Doctor.find()
+      .populate('user', 'name email phone avatar isVerified createdAt');
+
+    const result = doctors.map(doc => ({
+      _id: doc._id,
+      userId: doc.user?._id,
+      name: doc.user?.name,
+      email: doc.user?.email,
+      phone: doc.user?.phone,
+      avatar: doc.user?.avatar,
+      isVerified: doc.user?.isVerified,
+      joinedDate: doc.user?.createdAt,
+      specialty: doc.specialty,
+      fee: doc.fee,
+      experience: doc.experience,
+      location: doc.location,
+      bio: doc.bio,
+      rating: doc.rating,
+      reviews: doc.reviews,
+      available: doc.available,
+      tempPassword: doc.tempPassword,
+      credentialsChanged: doc.credentialsChanged,
+    }));
+
+    res.json({ success: true, count: result.length, doctors: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
