@@ -26,6 +26,7 @@ import AdminLogin from './pages/AdminLogin'
 import AdminAppointments from './pages/AdminAppointments'
 import AdminRecords from './pages/AdminRecords'
 import AdminUsers from './pages/AdminUsers'
+import AdminDoctors from './pages/AdminDoctors'
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, isAuthenticated } = useAuth()
@@ -124,7 +125,9 @@ export default function App() {
       <Route path="/admin/appointments" element={<AdminRoute><AdminAppointments /></AdminRoute>} />
       <Route path="/admin/records" element={<AdminRoute><AdminRecords /></AdminRoute>} />
       <Route path="/admin/users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
+      <Route path="/admin/doctors" element={<AdminRoute><AdminDoctors /></AdminRoute>} />
       <Route path="/admin/messages" element={<AdminRoute><Messages /></AdminRoute>} />
+      <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
 
       {/* Fallback */}
       <Route path="*" element={<Navigate to="/" replace />} />
