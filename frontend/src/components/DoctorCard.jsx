@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { assets } from '../assets/assets'
 
 export default function DoctorCard({ doctor }) {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ export default function DoctorCard({ doctor }) {
     >
       <div className="bg-[#eaf0fb] w-full aspect-square flex justify-center items-end overflow-hidden">
         <img 
-          src={doctor.avatar || (doctor.name.includes('Sarah') || doctor.name.includes('Elena') || doctor.name.includes('Lisa') || doctor.name.includes('Emily') ? '/images/doctor_female.png' : '/images/doctor_male.png')} 
+          src={doctor.avatar || assets.profile_pic}
           alt={doctor.name} 
           className="w-full h-full object-cover object-bottom" 
         />

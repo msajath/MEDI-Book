@@ -1,5 +1,6 @@
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { assets } from '../assets/assets'
 
 export default function ContactPage() {
   const handleSubmit = (e) => {
@@ -20,6 +21,7 @@ export default function ContactPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
             <div className="bg-surface p-8 md:p-12 rounded-2xl animate-fade-in-up">
+              <img src={assets.contact_image} alt="Contact Us" className="w-full h-[200px] object-cover rounded-xl mb-8 shadow-sm" />
               <h2 className="text-2xl font-semibold text-navy mb-8">Get in Touch</h2>
               
               <div className="flex gap-6 mb-8">
@@ -48,7 +50,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="text-[1.1rem] font-semibold text-navy mb-1">Email Address</h3>
-                  <p className="text-base text-outline leading-relaxed">support@prescripto.com<br/>info@prescripto.com</p>
+                  <p className="text-base text-outline leading-relaxed">support@medibook.com<br/>info@medibook.com</p>
                 </div>
               </div>
             </div>

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { assets } from '../assets/assets'
 
 // Helper to format a Date as YYYY-MM-DD
 const formatDate = (d) => {
@@ -163,8 +164,7 @@ export default function DoctorProfile() {
     )
   }
 
-  const isFemale = doctor.name.includes('Sarah') || doctor.name.includes('Elena') || doctor.name.includes('Lisa') || doctor.name.includes('Emily');
-  const docImage = doctor.avatar || (isFemale ? '/images/doctor_female.png' : '/images/doctor_male.png');
+  const docImage = doctor.avatar || assets.profile_pic;
 
   return (
     <div className="min-h-screen flex flex-col">

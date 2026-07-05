@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { assets } from '../assets/assets'
 
 export default function ForgotPassword() {
   const [step, setStep] = useState(1) // 1: email, 2: code, 3: new password
@@ -109,8 +110,7 @@ export default function ForgotPassword() {
         
         <div className="relative z-10 text-white w-full max-w-[420px]">
           <Link to="/" className="flex items-center gap-3 mb-4">
-            <span className="material-icons-outlined text-[40px] text-white">local_hospital</span>
-            <h1 className="text-4xl font-bold text-white">MediBook</h1>
+            <img src={assets.logo} alt="MediBook Logo" className="w-48 brightness-0 invert" />
           </Link>
           <p className="text-xl opacity-85 mb-10">Secure password recovery.</p>
           <div className="hidden md:flex flex-col gap-4">

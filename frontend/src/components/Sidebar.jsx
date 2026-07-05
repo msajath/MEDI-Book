@@ -1,5 +1,6 @@
 import { NavLink, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { assets } from '../assets/assets'
 
 const patientLinks = [
   { to: '/patient/appointments', icon: 'calendar_today', label: 'My Appointments' },
@@ -38,9 +39,8 @@ export default function Sidebar() {
   return (
     <aside className="fixed top-0 left-0 w-[260px] h-screen bg-gradient-to-b from-[#f0fdfa] via-[#ecfeff] to-[#f0f9ff] border-r border-outline-variant flex flex-col z-50 overflow-y-auto max-lg:-translate-x-full max-lg:transition-transform max-lg:duration-300" id="dashboard-sidebar">
       <div className="p-6 border-b border-outline-variant">
-        <Link to="/" className="flex items-center gap-2">
-          <span className="material-icons-outlined text-primary text-[28px]">local_hospital</span>
-          <span className="text-xl font-bold text-primary">MediBook</span>
+        <Link to="/" className="flex items-center">
+          <img src={assets.logo} alt="MediBook Logo" className="w-36" />
         </Link>
       </div>
 
@@ -50,7 +50,7 @@ export default function Sidebar() {
             {user.avatar ? (
               <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
             ) : (
-              user.name.split(' ').map(n => n[0]).join('').slice(0, 2)
+              <img src={assets.profile_pic} alt="Profile" className="w-full h-full object-cover" />
             )}
           </div>
           <div className="flex flex-col">

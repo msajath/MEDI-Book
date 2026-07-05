@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { assets } from '../assets/assets'
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('')
@@ -56,9 +57,7 @@ export default function AdminLogin() {
         <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
           {/* Logo */}
           <div className="flex flex-col items-center mb-8">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center mb-4 shadow-lg">
-              <span className="material-icons-outlined text-white text-[32px]">admin_panel_settings</span>
-            </div>
+            <img src={assets.logo} alt="MediBook Logo" className="w-40 mb-4 brightness-0 invert" />
             <h1 className="text-2xl font-bold text-white">Admin Portal</h1>
             <p className="text-slate-400 text-sm mt-1">MediBook Administration</p>
           </div>

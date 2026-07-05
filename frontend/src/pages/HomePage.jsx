@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import DoctorCard from '../components/DoctorCard'
 import { doctors } from '../data/mockData'
+import { assets } from '../assets/assets'
 
 export default function HomePage() {
   const topDoctors = doctors.slice(0, 4)
@@ -14,10 +15,13 @@ export default function HomePage() {
       <section className="py-16 md:py-24" id="hero">
         <div className="max-w-[1280px] mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center gap-12 md:gap-16">
           <div className="flex-1 animate-fade-in-up">
-            <span className="inline-flex items-center gap-1 px-3 py-1 bg-info-bg text-primary rounded-full text-xs font-semibold mb-4">
-              <span className="material-icons-outlined text-[14px]">verified</span>
-              Trusted by 10,000+ patients
-            </span>
+            <div className="flex items-center gap-2 mb-4">
+              <img src={assets.group_profiles} alt="Profiles" className="h-8" />
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-info-bg text-primary rounded-full text-xs font-semibold">
+                <span className="material-icons-outlined text-[14px]">verified</span>
+                Trusted by 10,000+ patients
+              </span>
+            </div>
             <h1 className="text-[28px] md:text-5xl font-bold leading-tight md:leading-[1.2] tracking-tight text-navy mb-6">
               Book Your Doctor<br />Appointment <span className="bg-gradient-to-br from-primary to-primary-light bg-clip-text text-transparent">Instantly</span>
             </h1>
@@ -37,7 +41,7 @@ export default function HomePage() {
           <div className="flex-1 animate-fade-in hidden md:block">
             <div className="relative w-full aspect-square max-w-[500px] mx-auto">
               <div className="absolute inset-0 bg-gradient-to-br from-[#e0f2fe] to-[#bae6fd] rounded-[2rem] overflow-hidden">
-                <img src="/images/doctor_female.png" alt="Doctor" className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[90%] object-cover object-bottom" />
+                <img src={assets.header_img} alt="Doctor" className="absolute bottom-0 left-1/2 -translate-x-1/2 h-full object-cover object-bottom" />
               </div>
               <div className="absolute top-[10%] -left-[5%] bg-white p-4 rounded-2xl shadow-lg flex items-center gap-3 animate-float-1 z-10">
                 <span className="material-icons-outlined text-primary text-[32px]">favorite</span>

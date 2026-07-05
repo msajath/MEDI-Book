@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { assets } from '../assets/assets'
 
 export default function Footer() {
   return (
@@ -6,9 +7,8 @@ export default function Footer() {
       <div className="max-w-[1280px] mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-start pb-8 border-b border-white/10 gap-6 md:gap-0">
           <div className="max-w-[300px]">
-            <Link to="/" className="flex items-center gap-2 mb-3">
-              <span className="material-icons-outlined text-primary text-24">local_hospital</span>
-              <span className="text-xl font-bold text-white">MediBook</span>
+            <Link to="/" className="flex items-center mb-3">
+              <img src={assets.logo} alt="MediBook Logo" className="w-36 brightness-0 invert" />
             </Link>
             <p className="text-sm leading-relaxed">Your trusted healthcare companion for seamless medical consultations.</p>
           </div>

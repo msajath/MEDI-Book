@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { assets } from '../assets/assets'
 
 export default function Navbar() {
   const { user, isAuthenticated, logout } = useAuth()
@@ -54,9 +55,8 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-outline-variant h-[72px]" id="main-navbar">
       <div className="max-w-[1280px] mx-auto px-6 h-full flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 text-xl font-bold text-primary">
-          <span className="material-icons-outlined bg-primary text-white p-1 rounded-lg text-24">auto_awesome</span>
-          <span className="text-navy">MediBook</span>
+        <Link to="/" className="flex items-center">
+          <img src={assets.logo} alt="MediBook Logo" className="w-36" />
         </Link>
 
         <div className="hidden md:flex items-center gap-8">
@@ -87,9 +87,9 @@ export default function Navbar() {
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 {user.avatar ? (
-                  <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                  <img src={user.avatar} alt="Profile" className="w-full h-full object-cover" />
                 ) : (
-                  user.name.charAt(0).toUpperCase()
+                  <img src={assets.profile_pic} alt="Profile" className="w-full h-full object-cover" />
                 )}
               </div>
 

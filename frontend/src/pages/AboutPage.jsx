@@ -1,5 +1,6 @@
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { assets } from '../assets/assets'
 
 export default function AboutPage() {
   return (
@@ -8,7 +9,7 @@ export default function AboutPage() {
       <main className="flex-1 py-16 md:py-24" id="about-page">
         <div className="max-w-[1280px] mx-auto px-4 md:px-6">
           <div className="text-center mb-16 animate-fade-in-up">
-            <h1 className="text-4xl md:text-5xl font-bold text-navy mb-4">About Prescripto</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-navy mb-4">About MediBook</h1>
             <p className="text-lg text-navy-muted">Transforming healthcare accessibility through technology.</p>
           </div>
 
@@ -16,19 +17,16 @@ export default function AboutPage() {
             <div>
               <h2 className="text-2xl font-semibold text-navy mb-4">Our Mission</h2>
               <p className="text-base text-outline leading-[1.7] mb-6">
-                At Prescripto, our mission is to make quality healthcare accessible to everyone. We believe that finding the right doctor and booking an appointment shouldn't be a hassle. We've built a platform that connects patients with top-rated medical professionals seamlessly and securely.
+                At MediBook, our mission is to make quality healthcare accessible to everyone. We believe that finding the right doctor and booking an appointment shouldn't be a hassle. We've built a platform that connects patients with top-rated medical professionals seamlessly and securely.
               </p>
               
               <h2 className="text-2xl font-semibold text-navy mb-4 mt-8">Why We Started</h2>
               <p className="text-base text-outline leading-[1.7] mb-6">
-                We recognized the frustration many patients face when trying to schedule appointments—long hold times, lack of transparency in availability, and difficulty finding verified specialists. Prescripto was born out of the desire to streamline this process, putting the power of healthcare management directly into the hands of the patients.
+                We recognized the frustration many patients face when trying to schedule appointments—long hold times, lack of transparency in availability, and difficulty finding verified specialists. MediBook was born out of the desire to streamline this process, putting the power of healthcare management directly into the hands of the patients.
               </p>
             </div>
-            <div className="bg-surface-container-low rounded-2xl h-[400px] flex items-center justify-center shadow-md">
-              <div className="text-center text-navy">
-                <span className="material-icons-outlined text-primary text-[64px] mb-4">local_hospital</span>
-                <h3 className="text-xl font-semibold">Dedicated to your health</h3>
-              </div>
+            <div className="flex items-center justify-center">
+              <img src={assets.about_image} alt="About Us" className="w-full max-w-[400px] object-cover rounded-2xl shadow-lg" />
             </div>
           </div>
 
