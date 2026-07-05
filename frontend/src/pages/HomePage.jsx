@@ -1,12 +1,27 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import DoctorCard from '../components/DoctorCard'
-import { doctors } from '../data/mockData'
-import { assets } from '../assets/assets'
+import { assets, specialityData } from '../assets/assets'
 
 export default function HomePage() {
-  const topDoctors = doctors.slice(0, 4)
+  const [topDoctors, setTopDoctors] = useState([])
+
+  useEffect(() => {
+    const fetchTopDoctors = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/doctors')
+        if (response.ok) {
+          const data = await response.json()
+          setTopDoctors((data.doctors || data || []).slice(0, 4))
+        }
+      } catch (err) {
+        console.error('Failed to fetch top doctors:', err)
+      }
+    }
+    fetchTopDoctors()
+  }, [])
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -101,19 +116,12 @@ export default function HomePage() {
             <p className="text-base text-navy-muted">Simply browse through our extensive list of trusted doctors, schedule your appointment hassle-free.</p>
           </div>
           <div className="flex flex-wrap justify-center gap-6 md:gap-8">
-            {[
-              { name: 'General physician', icon: 'health_and_safety' },
-              { name: 'Gynecologist', icon: 'pregnant_woman' },
-              { name: 'Dermatologist', icon: 'face' },
-              { name: 'Pediatricians', icon: 'child_care' },
-              { name: 'Neurologist', icon: 'psychology' },
-              { name: 'Gastroenterologist', icon: 'medication' },
-            ].map((spec, idx) => (
-              <Link to="/doctors" key={idx} className="flex flex-col items-center gap-3 group cursor-pointer">
+            {specialityData.map((spec, idx) => (
+              <Link to={`/doctors?specialty=${encodeURIComponent(spec.speciality)}`} key={idx} className="flex flex-col items-center gap-3 group cursor-pointer">
                 <div className="w-[80px] h-[80px] md:w-[100px] md:h-[100px] rounded-full bg-white shadow-sm border border-outline-variant flex items-center justify-center group-hover:-translate-y-2 group-hover:shadow-md transition-all duration-300 group-hover:border-primary">
-                  <span className="material-icons-outlined text-primary text-[32px] md:text-[40px]">{spec.icon}</span>
+                  <img src={spec.image} alt={spec.speciality} className="w-12 md:w-16 h-12 md:h-16" />
                 </div>
-                <span className="text-sm font-medium text-navy text-center w-full max-w-[100px]">{spec.name}</span>
+                <span className="text-sm font-medium text-navy text-center w-full max-w-[100px]">{spec.speciality}</span>
               </Link>
             ))}
           </div>

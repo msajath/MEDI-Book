@@ -56,8 +56,8 @@ export default function AdminLogin() {
         {/* Card */}
         <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
           {/* Logo */}
-          <div className="flex flex-col items-center mb-8">
-            <img src={assets.logo} alt="MediBook Logo" className="w-40 mb-4 brightness-0 invert" />
+          <div className="flex flex-col items-center mb-8 mix-blend-screen">
+            <img src={assets.logo} alt="MediBook Logo" className="w-40 mb-4 invert" />
             <h1 className="text-2xl font-bold text-white">Admin Portal</h1>
             <p className="text-slate-400 text-sm mt-1">MediBook Administration</p>
           </div>

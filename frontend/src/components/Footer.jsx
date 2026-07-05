@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-start pb-8 border-b border-white/10 gap-6 md:gap-0">
           <div className="max-w-[300px]">
             <Link to="/" className="flex items-center mb-3">
-              <img src={assets.logo} alt="MediBook Logo" className="w-36 brightness-0 invert" />
+              <img src={assets.logo} alt="MediBook Logo" className="w-36 invert mix-blend-screen" />
             </Link>
             <p className="text-sm leading-relaxed">Your trusted healthcare companion for seamless medical consultations.</p>
           </div>

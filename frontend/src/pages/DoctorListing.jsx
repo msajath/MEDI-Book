@@ -1,13 +1,17 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import { useLocation } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import DoctorCard from '../components/DoctorCard'
 import { specialties } from '../data/mockData'
 
 export default function DoctorListing() {
+  const locationObj = useLocation()
+  const queryParams = useMemo(() => new URLSearchParams(locationObj.search), [locationObj.search])
+  
   const [doctors, setDoctors] = useState([])
   const [search, setSearch] = useState('')
-  const [specialty, setSpecialty] = useState('All Specialties')
+  const [specialty, setSpecialty] = useState(queryParams.get('specialty') || 'All Specialties')
   const [location, setLocation] = useState('All Locations')
   const [availability, setAvailability] = useState('Availability')
   const [loading, setLoading] = useState(true)
@@ -16,6 +20,13 @@ export default function DoctorListing() {
   useEffect(() => {
     fetchDoctors()
   }, [])
+
+  useEffect(() => {
+    const spec = queryParams.get('specialty')
+    if (spec && spec !== specialty) {
+      setSpecialty(spec)
+    }
+  }, [queryParams])
 
   const fetchDoctors = async () => {
     try {

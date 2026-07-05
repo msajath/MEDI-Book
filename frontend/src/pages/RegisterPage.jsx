@@ -59,9 +59,9 @@ export default function RegisterPage() {
         <div className="absolute -top-[100px] -right-[100px] w-[500px] h-[500px] rounded-full bg-white/5 pointer-events-none"></div>
         <div className="absolute -bottom-[50px] -left-[50px] w-[300px] h-[300px] rounded-full bg-white/5 pointer-events-none"></div>
         
-        <div className="relative z-10 text-white w-full max-w-[420px]">
+        <div className="relative z-10 text-white w-full max-w-[420px] mix-blend-screen">
           <Link to="/" className="flex items-center gap-3 mb-4">
-            <img src={assets.logo} alt="MediBook Logo" className="w-48 brightness-0 invert" />
+            <img src={assets.logo} alt="MediBook Logo" className="w-48 invert" />
           </Link>
           <p className="text-xl opacity-85 mb-10">Join our network of healthcare excellence.</p>
           <div className="hidden md:flex flex-col gap-4">
