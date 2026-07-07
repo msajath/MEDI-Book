@@ -9,6 +9,32 @@ const { sendMail } = require('../utils/mailer');
 
 const router = express.Router();
 
+// Simple in-memory rate limiter for sensitive endpoints (forgot-password)
+// Keeps a sliding window counter per key (email or ip). This is intentionally
+// lightweight so it works without extra dependencies. For production, prefer
+// a distributed store (Redis) and a battle-tested package (express-rate-limit).
+const rateLimitStore = new Map();
+const RATE_LIMITS = {
+  perEmail: { windowMs: 60 * 60 * 1000, max: 5 }, // 5 per email per hour
+  perIP: { windowMs: 60 * 60 * 1000, max: 20 }, // 20 per IP per hour
+};
+
+function isRateLimited(key, { windowMs, max }) {
+  const now = Date.now();
+  const entry = rateLimitStore.get(key) || { count: 0, firstAt: now };
+
+  // Reset window if expired
+  if (now - entry.firstAt > windowMs) {
+    entry.count = 0;
+    entry.firstAt = now;
+  }
+
+  entry.count += 1;
+  rateLimitStore.set(key, entry);
+
+  return entry.count > max;
+}
+
 // Helper: Generate JWT
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -292,6 +318,19 @@ router.post(
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ success: false, errors: errors.array() });
+      }
+
+      // rate-limit by email and by IP to prevent abuse
+      const emailKey = `forgot:${req.body.email.toLowerCase()}`;
+      const ip = req.ip || req.connection.remoteAddress || 'unknown';
+      const ipKey = `forgot:${ip}`;
+
+      if (isRateLimited(emailKey, RATE_LIMITS.perEmail)) {
+        return res.status(429).json({ success: false, message: 'Too many password reset requests for this email. Try again later.' });
+      }
+
+      if (isRateLimited(ipKey, RATE_LIMITS.perIP)) {
+        return res.status(429).json({ success: false, message: 'Too many requests from this IP address. Try again later.' });
       }
 
       const user = await User.findOne({ email: req.body.email });
