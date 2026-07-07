@@ -17,7 +17,7 @@ test('renders AdminLogin form', () => {
   );
 
   expect(screen.getByText(/Admin Portal/i)).toBeInTheDocument();
-  expect(screen.getByPlaceholderText(/admin@medibook.com/i)).toBeInTheDocument();
+  expect(screen.getByPlaceholderText(/admin@mednexus.com/i)).toBeInTheDocument();
   expect(screen.getByPlaceholderText(/Enter your password/i)).toBeInTheDocument();
 });
 
@@ -30,7 +30,7 @@ test('handles input changes', () => {
     </BrowserRouter>
   );
 
-  const emailInput = screen.getByPlaceholderText(/admin@medibook.com/i);
+  const emailInput = screen.getByPlaceholderText(/admin@mednexus.com/i);
   fireEvent.change(emailInput, { target: { value: 'admin@test.com' } });
   expect(emailInput.value).toBe('admin@test.com');
 });

@@ -17,36 +17,36 @@ dotenv.config();
 
 const users = [
   // Patients
-  { name: 'Alex Johnson', email: 'alex@medibook.com', password: 'password123', role: 'patient', phone: '+1 (555) 123-4567' },
+  { name: 'Alex Johnson', email: 'alex@mednexus.com', password: 'password123', role: 'patient', phone: '+1 (555) 123-4567' },
   { name: 'Sarah Miller', email: 'sarah.miller@email.com', password: 'password123', role: 'patient' },
   { name: 'John Davis', email: 'john.davis@email.com', password: 'password123', role: 'patient' },
   { name: 'Emily Clark', email: 'emily.clark@email.com', password: 'password123', role: 'patient' },
 
   // Doctors
-  { name: 'Dr. Richard James', email: 'richard.james@medibook.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc1.png' },
-  { name: 'Dr. Emily Larson', email: 'emily.larson@medibook.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc2.png' },
-  { name: 'Dr. Sarah Patel', email: 'sarah.patel@medibook.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc3.png' },
-  { name: 'Dr. Christopher Lee', email: 'christopher.lee@medibook.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc4.png' },
-  { name: 'Dr. Jennifer Garcia', email: 'jennifer.garcia@medibook.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc5.png' },
-  { name: 'Dr. Andrew Williams', email: 'andrew.williams@medibook.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc6.png' },
-  { name: 'Dr. Christopher Davis', email: 'christopher.davis@medibook.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc7.png' },
-  { name: 'Dr. Timothy White', email: 'timothy.white@medibook.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc8.png' },
-  { name: 'Dr. Ava Mitchell', email: 'ava.mitchell@medibook.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc9.png' },
-  { name: 'Dr. Jeffrey King', email: 'jeffrey.king@medibook.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc10.png' },
-  { name: 'Dr. Zoe Kelly', email: 'zoe.kelly@medibook.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc11.png' },
-  { name: 'Dr. Patrick Harris', email: 'patrick.harris@medibook.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc12.png' },
-  { name: 'Dr. Chloe Evans', email: 'chloe.evans@medibook.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc13.png' },
-  { name: 'Dr. Ryan Martinez', email: 'ryan.martinez@medibook.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc14.png' },
-  { name: 'Dr. Amelia Hill', email: 'amelia.hill@medibook.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc15.png' },
+  { name: 'Dr. Richard James', email: 'richard.james@mednexus.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc1.png' },
+  { name: 'Dr. Emily Larson', email: 'emily.larson@mednexus.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc2.png' },
+  { name: 'Dr. Sarah Patel', email: 'sarah.patel@mednexus.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc3.png' },
+  { name: 'Dr. Christopher Lee', email: 'christopher.lee@mednexus.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc4.png' },
+  { name: 'Dr. Jennifer Garcia', email: 'jennifer.garcia@mednexus.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc5.png' },
+  { name: 'Dr. Andrew Williams', email: 'andrew.williams@mednexus.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc6.png' },
+  { name: 'Dr. Christopher Davis', email: 'christopher.davis@mednexus.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc7.png' },
+  { name: 'Dr. Timothy White', email: 'timothy.white@mednexus.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc8.png' },
+  { name: 'Dr. Ava Mitchell', email: 'ava.mitchell@mednexus.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc9.png' },
+  { name: 'Dr. Jeffrey King', email: 'jeffrey.king@mednexus.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc10.png' },
+  { name: 'Dr. Zoe Kelly', email: 'zoe.kelly@mednexus.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc11.png' },
+  { name: 'Dr. Patrick Harris', email: 'patrick.harris@mednexus.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc12.png' },
+  { name: 'Dr. Chloe Evans', email: 'chloe.evans@mednexus.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc13.png' },
+  { name: 'Dr. Ryan Martinez', email: 'ryan.martinez@mednexus.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc14.png' },
+  { name: 'Dr. Amelia Hill', email: 'amelia.hill@mednexus.com', password: 'password123', role: 'doctor', isVerified: true, avatar: '/images/doc15.png' },
 
   // Admin
-  { name: 'Admin User', email: 'admin@medibook.com', password: 'password123', role: 'admin' },
+  { name: 'Admin User', email: 'admin@mednexus.com', password: 'password123', role: 'admin' },
 ];
 
 
 const doctorProfiles = [
   {
-    email: 'richard.james@medibook.com',
+    email: 'richard.james@mednexus.com',
     profile: {
       specialty: 'General physician',
       fee: 50,
@@ -60,7 +60,7 @@ const doctorProfiles = [
     },
   },
   {
-    email: 'emily.larson@medibook.com',
+    email: 'emily.larson@mednexus.com',
     profile: {
       specialty: 'Gynecologist',
       fee: 60,
@@ -74,7 +74,7 @@ const doctorProfiles = [
     },
   },
   {
-    email: 'sarah.patel@medibook.com',
+    email: 'sarah.patel@mednexus.com',
     profile: {
       specialty: 'Dermatologist',
       fee: 30,
@@ -88,7 +88,7 @@ const doctorProfiles = [
     },
   },
   {
-    email: 'christopher.lee@medibook.com',
+    email: 'christopher.lee@mednexus.com',
     profile: {
       specialty: 'Pediatricians',
       fee: 40,
@@ -102,7 +102,7 @@ const doctorProfiles = [
     },
   },
   {
-    email: 'jennifer.garcia@medibook.com',
+    email: 'jennifer.garcia@mednexus.com',
     profile: {
       specialty: 'Neurologist',
       fee: 50,
@@ -116,7 +116,7 @@ const doctorProfiles = [
     },
   },
   {
-    email: 'andrew.williams@medibook.com',
+    email: 'andrew.williams@mednexus.com',
     profile: {
       specialty: 'Neurologist',
       fee: 50,
@@ -130,7 +130,7 @@ const doctorProfiles = [
     },
   },
   {
-    email: 'christopher.davis@medibook.com',
+    email: 'christopher.davis@mednexus.com',
     profile: {
       specialty: 'General physician',
       fee: 50,
@@ -144,7 +144,7 @@ const doctorProfiles = [
     },
   },
   {
-    email: 'timothy.white@medibook.com',
+    email: 'timothy.white@mednexus.com',
     profile: {
       specialty: 'Gynecologist',
       fee: 60,
@@ -158,7 +158,7 @@ const doctorProfiles = [
     },
   },
   {
-    email: 'ava.mitchell@medibook.com',
+    email: 'ava.mitchell@mednexus.com',
     profile: {
       specialty: 'Dermatologist',
       fee: 30,
@@ -172,7 +172,7 @@ const doctorProfiles = [
     },
   },
   {
-    email: 'jeffrey.king@medibook.com',
+    email: 'jeffrey.king@mednexus.com',
     profile: {
       specialty: 'Pediatricians',
       fee: 40,
@@ -186,7 +186,7 @@ const doctorProfiles = [
     },
   },
   {
-    email: 'zoe.kelly@medibook.com',
+    email: 'zoe.kelly@mednexus.com',
     profile: {
       specialty: 'Neurologist',
       fee: 50,
@@ -200,7 +200,7 @@ const doctorProfiles = [
     },
   },
   {
-    email: 'patrick.harris@medibook.com',
+    email: 'patrick.harris@mednexus.com',
     profile: {
       specialty: 'Neurologist',
       fee: 50,
@@ -214,7 +214,7 @@ const doctorProfiles = [
     },
   },
   {
-    email: 'chloe.evans@medibook.com',
+    email: 'chloe.evans@mednexus.com',
     profile: {
       specialty: 'General physician',
       fee: 50,
@@ -228,7 +228,7 @@ const doctorProfiles = [
     },
   },
   {
-    email: 'ryan.martinez@medibook.com',
+    email: 'ryan.martinez@mednexus.com',
     profile: {
       specialty: 'Gynecologist',
       fee: 60,
@@ -242,7 +242,7 @@ const doctorProfiles = [
     },
   },
   {
-    email: 'amelia.hill@medibook.com',
+    email: 'amelia.hill@mednexus.com',
     profile: {
       specialty: 'Dermatologist',
       fee: 30,
@@ -314,8 +314,8 @@ const seedDB = async () => {
     console.log('\n📅 Creating sample appointments...');
     const appointmentData = [
       {
-        patient: createdUsers['alex@medibook.com']._id,
-        doctor: createdDoctors['richard.james@medibook.com']._id,
+        patient: createdUsers['alex@mednexus.com']._id,
+        doctor: createdDoctors['richard.james@mednexus.com']._id,
         date: '2024-05-20',
         time: '10:00 AM',
         status: 'confirmed',
@@ -323,8 +323,8 @@ const seedDB = async () => {
         notes: 'Regular check-up for heart condition monitoring.',
       },
       {
-        patient: createdUsers['alex@medibook.com']._id,
-        doctor: createdDoctors['emily.larson@medibook.com']._id,
+        patient: createdUsers['alex@mednexus.com']._id,
+        doctor: createdDoctors['emily.larson@mednexus.com']._id,
         date: '2024-05-18',
         time: '2:30 PM',
         status: 'confirmed',
@@ -332,8 +332,8 @@ const seedDB = async () => {
         notes: 'Annual physical examination.',
       },
       {
-        patient: createdUsers['alex@medibook.com']._id,
-        doctor: createdDoctors['sarah.patel@medibook.com']._id,
+        patient: createdUsers['alex@mednexus.com']._id,
+        doctor: createdDoctors['sarah.patel@mednexus.com']._id,
         date: '2024-05-15',
         time: '11:00 AM',
         status: 'cancelled',
@@ -341,8 +341,8 @@ const seedDB = async () => {
         notes: 'Cancelled due to personal emergency.',
       },
       {
-        patient: createdUsers['alex@medibook.com']._id,
-        doctor: createdDoctors['christopher.lee@medibook.com']._id,
+        patient: createdUsers['alex@mednexus.com']._id,
+        doctor: createdDoctors['christopher.lee@mednexus.com']._id,
         date: '2024-05-22',
         time: '9:00 AM',
         status: 'pending',
@@ -350,8 +350,8 @@ const seedDB = async () => {
         notes: 'First appointment for skin evaluation.',
       },
       {
-        patient: createdUsers['alex@medibook.com']._id,
-        doctor: createdDoctors['richard.james@medibook.com']._id,
+        patient: createdUsers['alex@mednexus.com']._id,
+        doctor: createdDoctors['richard.james@mednexus.com']._id,
         date: '2024-05-25',
         time: '3:00 PM',
         status: 'confirmed',
@@ -361,7 +361,7 @@ const seedDB = async () => {
       // Doctor view appointments (patients booking with Dr. Sterling)
       {
         patient: createdUsers['sarah.miller@email.com']._id,
-        doctor: createdDoctors['jennifer.garcia@medibook.com']._id,
+        doctor: createdDoctors['jennifer.garcia@mednexus.com']._id,
         date: '2024-05-20',
         time: '09:00 AM',
         status: 'confirmed',
@@ -370,7 +370,7 @@ const seedDB = async () => {
       },
       {
         patient: createdUsers['john.davis@email.com']._id,
-        doctor: createdDoctors['jennifer.garcia@medibook.com']._id,
+        doctor: createdDoctors['jennifer.garcia@mednexus.com']._id,
         date: '2024-05-20',
         time: '10:30 AM',
         status: 'confirmed',
@@ -379,7 +379,7 @@ const seedDB = async () => {
       },
       {
         patient: createdUsers['emily.clark@email.com']._id,
-        doctor: createdDoctors['jennifer.garcia@medibook.com']._id,
+        doctor: createdDoctors['jennifer.garcia@mednexus.com']._id,
         date: '2024-05-20',
         time: '02:00 PM',
         status: 'cancelled',
@@ -402,9 +402,9 @@ const seedDB = async () => {
     console.log(`   Appointments: ${appointmentData.length}`);
     console.log('══════════════════════════════════════════');
     console.log('\n🔑 Login credentials:');
-    console.log('   Patient:  alex@medibook.com / password123');
-    console.log('   Doctor:   sterling@medibook.com / password123');
-    console.log('   Admin:    admin@medibook.com / password123');
+    console.log('   Patient:  alex@mednexus.com / password123');
+    console.log('   Doctor:   sterling@mednexus.com / password123');
+    console.log('   Admin:    admin@mednexus.com / password123');
     console.log('══════════════════════════════════════════\n');
 
     process.exit(0);

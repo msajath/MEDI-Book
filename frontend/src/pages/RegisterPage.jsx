@@ -61,7 +61,7 @@ export default function RegisterPage() {
         
         <div className="relative z-10 text-white w-full max-w-[420px] mix-blend-screen">
           <Link to="/" className="flex items-center gap-3 mb-4">
-            <img src={assets.logo} alt="MediBook Logo" className="w-48 invert" />
+            <img src={assets.logo} alt="MEDNEXUS Logo" className="w-48 invert" />
           </Link>
           <p className="text-xl opacity-85 mb-10">Join our network of healthcare excellence.</p>
           <div className="hidden md:flex flex-col gap-4">
@@ -75,7 +75,7 @@ export default function RegisterPage() {
       <div className="flex items-center justify-center p-8 md:p-12 bg-surface-container-lowest">
         <div className="w-full max-w-[480px]">
           <h2 className="text-3xl font-semibold text-navy mb-2">Create an Account</h2>
-          <p className="text-base text-navy-muted mb-6">Sign up to get started with MediBook</p>
+          <p className="text-base text-navy-muted mb-6">Sign up to get started with MEDNEXUS</p>
 
           <div className="flex gap-2 mb-6 p-1 bg-surface-container rounded-lg">
             {['patient', 'doctor'].map((r) => (
@@ -138,7 +138,7 @@ export default function RegisterPage() {
             <button type="submit" className="w-full py-3.5 bg-primary text-white text-base font-semibold rounded-xl hover:bg-primary-dark transition-colors mb-2 disabled:bg-slate-400 disabled:cursor-not-allowed" id="register-submit" disabled={loading}>{loading ? 'Creating Account...' : 'Create Account'}</button>
           </form>
           <p className="text-center text-sm text-navy-muted mb-8 mt-6">Already have an account? <Link to="/login" className="text-primary font-semibold hover:underline">Sign In</Link></p>
-          <p className="text-center text-xs text-outline mb-4">© 2024 MediBook. Secure, HIPAA compliant platform.</p>
+          <p className="text-center text-xs text-outline mb-4">© 2024 MEDNEXUS. Secure, HIPAA compliant platform.</p>
         </div>
       </div>
     </div>

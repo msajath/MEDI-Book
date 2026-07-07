@@ -43,7 +43,7 @@ export default function LoginPage() {
         
         <div className="relative z-10 text-white w-full max-w-[420px] mix-blend-screen">
           <Link to="/" className="flex items-center gap-3 mb-4">
-            <img src={assets.logo} alt="MediBook Logo" className="w-48 invert" />
+            <img src={assets.logo} alt="MEDNEXUS Logo" className="w-48 invert" />
           </Link>
           <p className="text-xl opacity-85 mb-10">Your health, managed with precision.</p>
           <div className="hidden md:flex flex-col gap-4">
@@ -57,7 +57,7 @@ export default function LoginPage() {
       <div className="flex items-center justify-center p-8 md:p-12 bg-surface-container-lowest">
         <div className="w-full max-w-[420px]">
           <h2 className="text-3xl font-semibold text-navy mb-2">Welcome back</h2>
-          <p className="text-base text-navy-muted mb-8">Sign in to your MediBook account</p>
+          <p className="text-base text-navy-muted mb-8">Sign in to your MEDNEXUS account</p>
 
           {error && (
             <div className="p-4 mb-4 bg-red-50 border border-red-200 rounded-lg text-red-600">
@@ -118,7 +118,7 @@ export default function LoginPage() {
             </button>
           </form>
           <p className="text-center text-sm text-navy-muted mb-8 mt-6">Don't have an account? <Link to="/register" className="text-primary font-semibold hover:underline">Register</Link></p>
-          <p className="text-center text-xs text-outline mb-4">© 2024 MediBook. Secure, HIPAA compliant platform.</p>
+          <p className="text-center text-xs text-outline mb-4">© 2024 MEDNEXUS. Secure, HIPAA compliant platform.</p>
 
           <div className="text-[0.85rem] text-slate-500 bg-slate-50 p-4 rounded-lg border border-slate-200">
             <strong className="text-slate-700">Demo Accounts:</strong><br/>

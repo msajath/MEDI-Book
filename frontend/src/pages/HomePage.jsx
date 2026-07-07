@@ -34,7 +34,7 @@ export default function HomePage() {
               <img src={assets.group_profiles} alt="Profiles" className="h-8" />
               <span className="inline-flex items-center gap-1 px-3 py-1 bg-info-bg text-primary rounded-full text-xs font-semibold">
                 <span className="material-icons-outlined text-[14px]">verified</span>
-                Trusted by 10,000+ patients
+                Trusted by 1,000+ patients
               </span>
             </div>
             <h1 className="text-[28px] md:text-5xl font-bold leading-tight md:leading-[1.2] tracking-tight text-navy mb-6">
@@ -79,7 +79,7 @@ export default function HomePage() {
       <section className="py-16 md:py-24 bg-surface" id="features">
         <div className="max-w-[1280px] mx-auto px-4 md:px-6">
           <div className="text-center mb-16">
-            <h2 className="text-2xl md:text-3xl font-semibold text-navy mb-4">Why Choose MediBook?</h2>
+            <h2 className="text-2xl md:text-3xl font-semibold text-navy mb-4">Why Choose MEDNEXUS?</h2>
             <p className="text-base text-navy-muted">Experience healthcare that puts you first.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -95,7 +95,7 @@ export default function HomePage() {
                 <span className="material-icons-outlined text-success text-[28px]">verified_user</span>
               </div>
               <h3 className="text-lg font-semibold text-navy mb-3">Verified Doctors</h3>
-              <p className="text-base text-navy-muted leading-relaxed">Every professional on MediBook undergoes a rigorous 5-step background verification process.</p>
+              <p className="text-base text-navy-muted leading-relaxed">Every professional on MEDNEXUS undergoes a rigorous 5-step background verification process.</p>
             </div>
             <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               <div className="w-14 h-14 rounded-xl bg-warning-bg flex items-center justify-center mb-6">
@@ -150,7 +150,7 @@ export default function HomePage() {
       <section className="py-16 md:py-24" id="how-it-works">
         <div className="max-w-[1280px] mx-auto px-4 md:px-6">
           <div className="text-center mb-16">
-            <h2 className="text-2xl md:text-3xl font-semibold text-navy mb-4">How MediBook Works</h2>
+            <h2 className="text-2xl md:text-3xl font-semibold text-navy mb-4">How MEDNEXUS Works</h2>
             <p className="text-base text-navy-muted">Booking a medical consultation has never been this simple. Follow these three easy steps.</p>
           </div>
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative">

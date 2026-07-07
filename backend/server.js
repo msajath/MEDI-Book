@@ -33,7 +33,7 @@ app.use('/api/records', require('./routes/medicalRecordRoutes'));
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'MediBook API is running', timestamp: new Date().toISOString() });
+  res.json({ status: 'ok', message: 'MEDNEXUS API is running', timestamp: new Date().toISOString() });
 });
 
 // ──────────────────────────────────────────────
@@ -49,7 +49,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`
   ╔══════════════════════════════════════════╗
-  ║   🏥  MediBook API Server               ║
+  ║   🏥  MEDNEXUS API Server               ║
   ║   🚀  Running on port ${PORT}              ║
   ║   📡  http://localhost:${PORT}/api/health  ║
   ╚══════════════════════════════════════════╝

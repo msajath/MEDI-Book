@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-start pb-8 border-b border-white/10 gap-6 md:gap-0">
           <div className="max-w-[300px]">
             <Link to="/" className="flex items-center mb-3">
-              <img src={assets.logo} alt="MediBook Logo" className="w-36 invert mix-blend-screen" />
+              <img src={assets.logo} alt="MEDNEXUS Logo" className="w-36 invert mix-blend-screen" />
             </Link>
             <p className="text-sm leading-relaxed">Your trusted healthcare companion for seamless medical consultations.</p>
           </div>
@@ -20,7 +20,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="pt-6 text-sm text-center">
-          <p>© 2024 MediBook. All rights reserved.</p>
+          <p>© 2024 MEDNEXUS. All rights reserved.</p>
         </div>
       </div>
     </footer>

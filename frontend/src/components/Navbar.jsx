@@ -56,7 +56,7 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-outline-variant h-[72px]" id="main-navbar">
       <div className="max-w-[1280px] mx-auto px-6 h-full flex items-center justify-between">
         <Link to="/" className="flex items-center">
-          <img src={assets.logo} alt="MediBook Logo" className="w-36" />
+          <img src={assets.logo} alt="MEDNEXUS Logo" className="w-36" />
         </Link>
 
         <div className="hidden md:flex items-center gap-8">

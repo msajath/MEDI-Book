@@ -57,9 +57,9 @@ export default function AdminLogin() {
         <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
           {/* Logo */}
           <div className="flex flex-col items-center mb-8 mix-blend-screen">
-            <img src={assets.logo} alt="MediBook Logo" className="w-40 mb-4 invert" />
+            <img src={assets.logo} alt="MEDNEXUS Logo" className="w-40 mb-4 invert" />
             <h1 className="text-2xl font-bold text-white">Admin Portal</h1>
-            <p className="text-slate-400 text-sm mt-1">MediBook Administration</p>
+            <p className="text-slate-400 text-sm mt-1">MEDNEXUS Administration</p>
           </div>
 
           {/* Warning banner */}
@@ -83,7 +83,7 @@ export default function AdminLogin() {
               <input
                 type="email"
                 required
-                placeholder="admin@medibook.com"
+                placeholder="admin@mednexus.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
@@ -125,13 +125,13 @@ export default function AdminLogin() {
 
           <div className="mt-6 pt-5 border-t border-white/10 text-center">
             <Link to="/" className="text-slate-400 text-xs hover:text-white transition-colors">
-              ← Back to MediBook Homepage
+              ← Back to MEDNEXUS Homepage
             </Link>
           </div>
         </div>
 
         <p className="text-center text-slate-500 text-xs mt-4">
-          © 2024 MediBook · Secure Admin Access
+          © 2024 MEDNEXUS · Secure Admin Access
         </p>
       </div>
     </div>

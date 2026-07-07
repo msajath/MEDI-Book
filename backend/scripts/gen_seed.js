@@ -12,7 +12,7 @@ fs.writeFileSync('d:\\4th sem\\Test website\\mockData_doctors.txt', mockDataDoct
 // Generate backend users and doctorProfiles
 let seederUsers = `const users = [
   // Patients
-  { name: 'Alex Johnson', email: 'alex@medibook.com', password: 'password123', role: 'patient', phone: '+1 (555) 123-4567' },
+  { name: 'Alex Johnson', email: 'alex@mednexus.com', password: 'password123', role: 'patient', phone: '+1 (555) 123-4567' },
   { name: 'Sarah Miller', email: 'sarah.miller@email.com', password: 'password123', role: 'patient' },
   { name: 'John Davis', email: 'john.davis@email.com', password: 'password123', role: 'patient' },
   { name: 'Emily Clark', email: 'emily.clark@email.com', password: 'password123', role: 'patient' },
@@ -21,19 +21,19 @@ let seederUsers = `const users = [
 `;
 doctors.forEach(d => {
   const emailName = d.name.toLowerCase().replace('dr. ', '').replace(' ', '.');
-  const email = `${emailName}@medibook.com`;
+  const email = `${emailName}@mednexus.com`;
   seederUsers += `  { name: '${d.name}', email: '${email}', password: 'password123', role: 'doctor', isVerified: true, avatar: '${d.image}' },\n`;
 });
 seederUsers += `
   // Admin
-  { name: 'Admin User', email: 'admin@medibook.com', password: 'password123', role: 'admin' },
+  { name: 'Admin User', email: 'admin@mednexus.com', password: 'password123', role: 'admin' },
 ];
 `;
 
 let seederProfiles = `const doctorProfiles = [\n`;
 doctors.forEach(d => {
   const emailName = d.name.toLowerCase().replace('dr. ', '').replace(' ', '.');
-  const email = `${emailName}@medibook.com`;
+  const email = `${emailName}@mednexus.com`;
   seederProfiles += `  {
     email: '${email}',
     profile: {

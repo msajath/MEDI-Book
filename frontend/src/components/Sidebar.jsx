@@ -40,7 +40,7 @@ export default function Sidebar() {
     <aside className="fixed top-0 left-0 w-[260px] h-screen bg-gradient-to-b from-[#f0fdfa] via-[#ecfeff] to-[#f0f9ff] border-r border-outline-variant flex flex-col z-50 overflow-y-auto max-lg:-translate-x-full max-lg:transition-transform max-lg:duration-300" id="dashboard-sidebar">
       <div className="p-6 border-b border-outline-variant">
         <Link to="/" className="flex items-center">
-          <img src={assets.logo} alt="MediBook Logo" className="w-36" />
+          <img src={assets.logo} alt="MEDNEXUS Logo" className="w-36" />
         </Link>
       </div>
 

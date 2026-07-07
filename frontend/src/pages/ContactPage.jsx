@@ -50,7 +50,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="text-[1.1rem] font-semibold text-navy mb-1">Email Address</h3>
-                  <p className="text-base text-outline leading-relaxed">support@medibook.com<br/>info@medibook.com</p>
+                  <p className="text-base text-outline leading-relaxed">support@mednexus.com<br/>info@mednexus.com</p>
                 </div>
               </div>
             </div>
