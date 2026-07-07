@@ -1,9 +1,11 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 const Doctor = require('../models/Doctor');
 const { protect } = require('../middleware/auth');
+const { sendMail } = require('../utils/mailer');
 
 const router = express.Router();
 
@@ -279,7 +281,7 @@ router.put(
 
 // ──────────────────────────────────────────────
 // @route   POST /api/auth/forgot-password
-// @desc    Generate password reset OTP code
+// @desc    Generate a temporary password and email it to the registered address
 // @access  Public
 // ──────────────────────────────────────────────
 router.post(
@@ -297,16 +299,38 @@ router.post(
         return res.status(404).json({ success: false, message: 'No account found with this email address' });
       }
 
-      // Generate reset code
-      const resetCode = user.generateResetToken();
-      await user.save({ validateBeforeSave: false });
+      const temporaryPassword = crypto.randomBytes(6).toString('base64url').slice(0, 10);
 
-      // In production, send this code via email
-      // For now, return it in the response
+      user.password = temporaryPassword;
+      user.resetPasswordToken = null;
+      user.resetPasswordExpire = null;
+      await user.save();
+
+      await sendMail({
+        to: user.email,
+        subject: 'Your MEDNEXUS temporary password',
+        text: [
+          `Hello ${user.name},`,
+          '',
+          'We received a request to reset your password.',
+          `Your temporary password is: ${temporaryPassword}`,
+          '',
+          'Sign in with this password and change it as soon as possible.',
+          '',
+          'If you did not request this change, please contact support immediately.',
+        ].join('\n'),
+        html: `
+          <p>Hello ${user.name},</p>
+          <p>We received a request to reset your password.</p>
+          <p><strong>Your temporary password is:</strong> <code>${temporaryPassword}</code></p>
+          <p>Sign in with this password and change it as soon as possible.</p>
+          <p>If you did not request this change, please contact support immediately.</p>
+        `,
+      });
+
       res.json({
         success: true,
-        message: 'Password reset code generated successfully',
-        resetCode, // In production, remove this and send via email
+        message: 'A temporary password has been sent to your email address',
       });
     } catch (error) {
       res.status(500).json({ success: false, message: error.message });
@@ -336,7 +360,6 @@ router.post(
       const { email, resetCode, newPassword } = req.body;
 
       // Hash the provided code to compare with stored hash
-      const crypto = require('crypto');
       const hashedCode = crypto.createHash('sha256').update(resetCode).digest('hex');
 
       const user = await User.findOne({

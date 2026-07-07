@@ -103,4 +103,28 @@ describe('Auth Routes', () => {
       expect(res.body.token).toBeDefined();
     });
   });
+
+  describe('POST /api/auth/forgot-password', () => {
+    it('should generate and save a temporary password for an existing user', async () => {
+      const mockUser = {
+        _id: '123',
+        name: 'Test Patient',
+        email: 'test@test.com',
+        password: 'old-password',
+        save: jest.fn().mockResolvedValue(true),
+      };
+
+      User.findOne.mockResolvedValue(mockUser);
+
+      const res = await request(app)
+        .post('/api/auth/forgot-password')
+        .send({ email: 'test@test.com' });
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body.success).toBe(true);
+      expect(res.body.message).toBe('A temporary password has been sent to your email address');
+      expect(mockUser.password).not.toBe('old-password');
+      expect(mockUser.save).toHaveBeenCalled();
+    });
+  });
 });
