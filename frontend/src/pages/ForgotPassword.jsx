@@ -43,7 +43,7 @@ export default function ForgotPassword() {
 
         <div className="relative z-10 text-white w-full max-w-105 mix-blend-screen">
           <Link to="/" className="flex items-center gap-3 mb-4">
-            <img src={assets.logo} alt="MEDNEXUS Logo" className="w-48 invert" />
+            <img src={assets.logo} alt="MEDNEXUS Logo" className="w-48" />
           </Link>
           <p className="text-xl opacity-85 mb-10">Secure password recovery.</p>
           <div className="hidden md:flex flex-col gap-4">
