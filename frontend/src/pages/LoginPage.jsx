@@ -36,12 +36,12 @@ export default function LoginPage() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen" id="login-page">
-      <div className="relative flex items-center justify-center p-8 md:p-12 overflow-hidden bg-gradient-to-br from-primary-dark via-primary to-[#0e7490]">
+      <div className="relative flex items-center justify-center p-8 md:p-12 overflow-hidden bg-linear-to-br from-primary-dark via-primary to-[#0e7490]">
         {/* Background Decorative Circles */}
-        <div className="absolute -top-[100px] -right-[100px] w-[500px] h-[500px] rounded-full bg-white/5 pointer-events-none"></div>
-        <div className="absolute -bottom-[50px] -left-[50px] w-[300px] h-[300px] rounded-full bg-white/5 pointer-events-none"></div>
+        <div className="absolute -top-25 -right-25 w-125 h-125 rounded-full bg-white/5 pointer-events-none"></div>
+        <div className="absolute -bottom-12.5 -left-12.5 w-75 h-75 rounded-full bg-white/5 pointer-events-none"></div>
         
-        <div className="relative z-10 text-white w-full max-w-[420px] mix-blend-screen">
+        <div className="relative z-10 text-white w-full max-w-105 mix-blend-screen">
           <Link to="/" className="flex items-center gap-3 mb-4">
             <img src={assets.logo} alt="MEDNEXUS Logo" className="w-48 invert" />
           </Link>
@@ -55,7 +55,7 @@ export default function LoginPage() {
       </div>
 
       <div className="flex items-center justify-center p-8 md:p-12 bg-surface-container-lowest">
-        <div className="w-full max-w-[420px]">
+        <div className="w-full max-w-105">
           <h2 className="text-3xl font-semibold text-navy mb-2">Welcome back</h2>
           <p className="text-base text-navy-muted mb-8">Sign in to your MEDNEXUS account</p>
 
