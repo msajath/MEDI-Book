@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { assets } from '../assets/assets'
+import { motion } from 'framer-motion'
 
 export default function Navbar() {
   const { user, isAuthenticated, logout } = useAuth()
@@ -53,7 +54,13 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-outline-variant h-[72px]" id="main-navbar">
+    <motion.nav 
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: "spring", stiffness: 100, damping: 20 }}
+      className="sticky top-0 z-50 glass h-[72px]" 
+      id="main-navbar"
+    >
       <div className="max-w-[1280px] mx-auto px-6 h-full flex items-center justify-between">
         <Link to="/" className="flex items-center">
           <img src={assets.logo} alt="MEDNEXUS Logo" className="w-36" />
@@ -62,19 +69,19 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-8">
           <Link to="/" className={`text-sm font-medium transition-colors relative pb-[24px] mb-[-24px] ${location.pathname === '/' ? 'text-primary' : 'text-navy-muted hover:text-primary'}`}>
             HOME
-            {location.pathname === '/' && <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary rounded-sm"></span>}
+            {location.pathname === '/' && <motion.span layoutId="underline" className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary rounded-sm"></motion.span>}
           </Link>
           <Link to="/doctors" className={`text-sm font-medium transition-colors relative pb-[24px] mb-[-24px] ${location.pathname === '/doctors' ? 'text-primary' : 'text-navy-muted hover:text-primary'}`}>
             ALL DOCTORS
-            {location.pathname === '/doctors' && <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary rounded-sm"></span>}
+            {location.pathname === '/doctors' && <motion.span layoutId="underline" className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary rounded-sm"></motion.span>}
           </Link>
           <Link to="/about" className={`text-sm font-medium transition-colors relative pb-[24px] mb-[-24px] ${location.pathname === '/about' ? 'text-primary' : 'text-navy-muted hover:text-primary'}`}>
             ABOUT
-            {location.pathname === '/about' && <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary rounded-sm"></span>}
+            {location.pathname === '/about' && <motion.span layoutId="underline" className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary rounded-sm"></motion.span>}
           </Link>
           <Link to="/contact" className={`text-sm font-medium transition-colors relative pb-[24px] mb-[-24px] ${location.pathname === '/contact' ? 'text-primary' : 'text-navy-muted hover:text-primary'}`}>
             CONTACT
-            {location.pathname === '/contact' && <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary rounded-sm"></span>}
+            {location.pathname === '/contact' && <motion.span layoutId="underline" className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary rounded-sm"></motion.span>}
           </Link>
           <Link to="/admin/dashboard" className="px-4 py-1 border-2 border-outline-variant rounded-full text-xs font-medium text-navy hover:bg-primary hover:text-white hover:border-primary transition-colors ml-2">Admin Panel</Link>
         </div>
@@ -148,6 +155,7 @@ export default function Navbar() {
           )}
         </div>
       </div>
-    </nav>
+    </motion.nav>
   )
 }
+

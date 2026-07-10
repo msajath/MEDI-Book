@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.1",
+    "framer-motion": "^12.42.2",
     "lucide-react": "^1.21.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "react-parallax-tilt": "^1.7.333",
     "react-router-dom": "^7.18.0",
     "tailwindcss": "^4.3.1"
   },
