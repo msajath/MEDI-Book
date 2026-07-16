@@ -41,7 +41,6 @@ export function AuthProvider({ children }) {
   }
 
   const login = async (email, password) => {
-    setLoading(true)
     setError(null)
     try {
       const response = await fetch('http://localhost:5000/api/auth/login', {
@@ -71,9 +70,41 @@ export function AuthProvider({ children }) {
     } catch (err) {
       console.error('Login error:', err)
       setError(err.message)
-      return false
-    } finally {
-      setLoading(false)
+      throw err
+    }
+  }
+
+  const register = async (name, email, password, role, extras = {}) => {
+    setError(null)
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, email, password, role, ...extras })
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.message || errorData.errors?.[0]?.msg || 'Registration failed')
+      }
+
+      const data = await response.json()
+      const token = data.token
+      const userData = data.user
+
+      if (token) {
+        localStorage.setItem('token', token)
+        setUser(userData)
+        return userData
+      } else {
+        throw new Error('No token received')
+      }
+    } catch (err) {
+      console.error('Register error:', err)
+      setError(err.message)
+      throw err
     }
   }
 
@@ -83,10 +114,11 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login, logout, isAuthenticated: !!user, loading, error }}>
+    <AuthContext.Provider value={{ user, setUser, login, register, logout, isAuthenticated: !!user, loading, error }}>
       {children}
     </AuthContext.Provider>
   )
 }
 
 export const useAuth = () => useContext(AuthContext)
+

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import { assets } from '../assets/assets'
 
 export default function RegisterPage() {
@@ -12,6 +13,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const { register } = useAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -19,32 +21,18 @@ export default function RegisterPage() {
     setLoading(true)
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: `${firstName} ${lastName}`.trim(),
-          email,
-          password,
-          role,
-        }),
-      })
+      const userData = await register(
+        `${firstName} ${lastName}`.trim(),
+        email,
+        password,
+        role
+      )
 
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.message || data.errors?.[0]?.msg || 'Registration failed')
+      if (userData) {
+        if (role === 'doctor') navigate('/doctor/dashboard')
+        else if (role === 'admin') navigate('/admin/dashboard')
+        else navigate('/patient/appointments')
       }
-
-      // Store the token from registration
-      if (data.token) {
-        localStorage.setItem('token', data.token)
-      }
-
-      // Navigate based on role
-      if (role === 'doctor') navigate('/doctor/dashboard')
-      else if (role === 'admin') navigate('/admin/dashboard')
-      else navigate('/patient/appointments')
     } catch (err) {
       setError(err.message || 'Registration failed. Please try again.')
     } finally {
@@ -54,20 +42,20 @@ export default function RegisterPage() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen" id="register-page">
-      <div className="relative flex items-center justify-center p-8 md:p-12 overflow-hidden bg-gradient-to-br from-primary-dark via-primary to-[#0e7490]">
+      <div className="relative flex items-center justify-center p-8 md:p-12 overflow-hidden bg-linear-to-br from-teal-light via-accent-blue to-surface border-r border-outline-variant">
         {/* Background Decorative Circles */}
-        <div className="absolute -top-[100px] -right-[100px] w-[500px] h-[500px] rounded-full bg-white/5 pointer-events-none"></div>
-        <div className="absolute -bottom-[50px] -left-[50px] w-[300px] h-[300px] rounded-full bg-white/5 pointer-events-none"></div>
+        <div className="absolute -top-[100px] -right-[100px] w-[500px] h-[500px] rounded-full bg-primary/5 pointer-events-none"></div>
+        <div className="absolute -bottom-[50px] -left-[50px] w-[300px] h-[300px] rounded-full bg-primary/5 pointer-events-none"></div>
         
-        <div className="relative z-10 text-white w-full max-w-[420px] mix-blend-screen">
+        <div className="relative z-10 text-navy w-full max-w-[420px]">
           <Link to="/" className="flex items-center gap-3 mb-4">
-            <img src={assets.logo} alt="MEDNEXUS Logo" className="w-48 invert" />
+            <img src={assets.logo} alt="MEDNEXUS Logo" className="w-48" />
           </Link>
-          <p className="text-xl opacity-85 mb-10">Join our network of healthcare excellence.</p>
+          <p className="text-xl text-navy-muted mb-10">Join our network of healthcare excellence.</p>
           <div className="hidden md:flex flex-col gap-4">
-            <div className="flex items-center gap-3 text-base opacity-90"><span className="material-icons-outlined text-primary-light text-[20px]">check_circle</span> Connect with top specialists</div>
-            <div className="flex items-center gap-3 text-base opacity-90"><span className="material-icons-outlined text-primary-light text-[20px]">check_circle</span> Manage health records securely</div>
-            <div className="flex items-center gap-3 text-base opacity-90"><span className="material-icons-outlined text-primary-light text-[20px]">check_circle</span> 24/7 priority support</div>
+            <div className="flex items-center gap-3 text-base text-navy"><span className="material-icons-outlined text-primary text-[20px]">how_to_reg</span> Quick & Easy Registration</div>
+            <div className="flex items-center gap-3 text-base text-navy"><span className="material-icons-outlined text-primary text-[20px]">health_and_safety</span> Access Top Specialists</div>
+            <div className="flex items-center gap-3 text-base text-navy"><span className="material-icons-outlined text-primary text-[20px]">history</span> Complete Medical History Tracking</div>
           </div>
         </div>
       </div>

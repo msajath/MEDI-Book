@@ -24,11 +24,9 @@ export default function LoginPage() {
         if (userRole === 'doctor') navigate('/doctor/dashboard')
         else if (userRole === 'admin') navigate('/admin/dashboard')
         else navigate('/patient/appointments')
-      } else {
-        setError('Invalid email or password')
       }
     } catch (err) {
-      setError(err.message || 'Login failed')
+      setError(err.message || 'Invalid email or password')
     } finally {
       setLoading(false)
     }
@@ -36,20 +34,20 @@ export default function LoginPage() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen" id="login-page">
-      <div className="relative flex items-center justify-center p-8 md:p-12 overflow-hidden bg-linear-to-br from-primary-dark via-primary to-[#0e7490]">
+      <div className="relative flex items-center justify-center p-8 md:p-12 overflow-hidden bg-linear-to-br from-teal-light via-accent-blue to-surface border-r border-outline-variant">
         {/* Background Decorative Circles */}
-        <div className="absolute -top-25 -right-25 w-125 h-125 rounded-full bg-white/5 pointer-events-none"></div>
-        <div className="absolute -bottom-12.5 -left-12.5 w-75 h-75 rounded-full bg-white/5 pointer-events-none"></div>
+        <div className="absolute -top-25 -right-25 w-125 h-125 rounded-full bg-primary/5 pointer-events-none"></div>
+        <div className="absolute -bottom-12.5 -left-12.5 w-75 h-75 rounded-full bg-primary/5 pointer-events-none"></div>
         
-        <div className="relative z-10 text-white w-full max-w-105 mix-blend-screen">
+        <div className="relative z-10 text-navy w-full max-w-105">
           <Link to="/" className="flex items-center gap-3 mb-4">
-            <img src={assets.logo} alt="MEDNEXUS Logo" className="w-48 invert" />
+            <img src={assets.logo} alt="MEDNEXUS Logo" className="w-48" />
           </Link>
-          <p className="text-xl opacity-85 mb-10">Your health, managed with precision.</p>
+          <p className="text-xl text-navy-muted mb-10">Your health, managed with precision.</p>
           <div className="hidden md:flex flex-col gap-4">
-            <div className="flex items-center gap-3 text-base opacity-90"><span className="material-icons-outlined text-primary-light text-[20px]">check_circle</span> Instant Appointment Booking</div>
-            <div className="flex items-center gap-3 text-base opacity-90"><span className="material-icons-outlined text-primary-light text-[20px]">check_circle</span> Verified Specialists</div>
-            <div className="flex items-center gap-3 text-base opacity-90"><span className="material-icons-outlined text-primary-light text-[20px]">check_circle</span> HIPAA Compliant Platform</div>
+            <div className="flex items-center gap-3 text-base text-navy"><span className="material-icons-outlined text-primary text-[20px]">check_circle</span> Instant Appointment Booking</div>
+            <div className="flex items-center gap-3 text-base text-navy"><span className="material-icons-outlined text-primary text-[20px]">check_circle</span> Verified Specialists</div>
+            <div className="flex items-center gap-3 text-base text-navy"><span className="material-icons-outlined text-primary text-[20px]">check_circle</span> HIPAA Compliant Platform</div>
           </div>
         </div>
       </div>
@@ -122,9 +120,9 @@ export default function LoginPage() {
 
           <div className="text-[0.85rem] text-slate-500 bg-slate-50 p-4 rounded-lg border border-slate-200">
             <strong className="text-slate-700">Demo Accounts:</strong><br/>
-            <span className="block mt-1">Patient: patient@example.com / password123</span>
-            <span className="block mt-1">Doctor: doctor@example.com / password123</span>
-            <span className="block mt-1">Admin: admin@example.com / password123</span>
+            <span className="block mt-1">Patient: alex@mednexus.com / password123</span>
+            <span className="block mt-1">Doctor: richard.james@mednexus.com / password123</span>
+            <span className="block mt-1">Admin: admin@mednexus.com / password123</span>
           </div>
         </div>
       </div>

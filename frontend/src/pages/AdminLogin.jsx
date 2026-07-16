@@ -10,7 +10,7 @@ export default function AdminLogin() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
-  const { user, login } = useAuth()
+  const { user, setUser } = useAuth()
 
   // If already logged in as admin, go to dashboard
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function AdminLogin() {
       }
 
       localStorage.setItem('token', data.token)
-      login(data.user)
+      setUser(data.user)
       navigate('/admin/dashboard', { replace: true })
     } catch (err) {
       setError(err.message)
@@ -45,32 +45,27 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-[#0c1445] to-slate-800 p-4" id="admin-login-page">
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-primary/10 blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-blue-600/10 blur-3xl" />
-      </div>
-
-      <div className="relative w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-surface p-4" id="admin-login-page">
+      <div className="w-full max-w-md">
+        
         {/* Card */}
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
+        <div className="bg-white border border-outline-variant rounded-2xl p-8 shadow-2xl">
           {/* Logo */}
-          <div className="flex flex-col items-center mb-8 mix-blend-screen">
-            <img src={assets.logo} alt="MEDNEXUS Logo" className="w-40 mb-4 invert" />
-            <h1 className="text-2xl font-bold text-white">Admin Portal</h1>
-            <p className="text-slate-400 text-sm mt-1">MEDNEXUS Administration</p>
+          <div className="flex flex-col items-center mb-8">
+            <img src={assets.logo} alt="MEDNEXUS Logo" className="w-40 mb-4" />
+            <h1 className="text-2xl font-bold text-navy">Admin Portal</h1>
+            <p className="text-navy-muted text-sm mt-1">MEDNEXUS Administration</p>
           </div>
 
           {/* Warning banner */}
-          <div className="flex items-center gap-2 p-3 mb-6 bg-yellow-500/10 border border-yellow-500/20 rounded-xl text-yellow-300 text-xs">
+          <div className="flex items-center gap-2 p-3 mb-6 bg-warning-bg border border-warning/20 rounded-xl text-warning text-xs">
             <span className="material-icons-outlined text-[18px] shrink-0">security</span>
             <span>Restricted access — Authorized administrators only</span>
           </div>
 
           {/* Error */}
           {error && (
-            <div className="flex items-center gap-2 p-3 mb-5 bg-red-500/10 border border-red-500/20 rounded-xl text-red-300 text-sm">
+            <div className="flex items-center gap-2 p-3 mb-5 bg-error-bg border border-error/20 rounded-xl text-error text-sm">
               <span className="material-icons-outlined text-[18px] shrink-0">error_outline</span>
               {error}
             </div>
@@ -79,7 +74,7 @@ export default function AdminLogin() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-slate-300">Admin Email</label>
+              <label className="text-sm font-medium text-navy">Admin Email</label>
               <input
                 type="email"
                 required
@@ -87,11 +82,11 @@ export default function AdminLogin() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:border-primary transition-colors"
+                className="w-full px-4 py-3 bg-white border-[1.5px] border-slate-300 rounded-xl text-on-surface placeholder-slate-400 text-sm focus:outline-none focus:border-primary transition-colors"
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-slate-300">Password</label>
+              <label className="text-sm font-medium text-navy">Password</label>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
@@ -100,13 +95,13 @@ export default function AdminLogin() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
-                  className="w-full px-4 py-3 pr-12 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:border-primary transition-colors"
+                  className="w-full px-4 py-3 pr-12 bg-white border-[1.5px] border-slate-300 rounded-xl text-on-surface placeholder-slate-400 text-sm focus:outline-none focus:border-primary transition-colors"
                 />
                 <button
                   type="button"
                   tabIndex={-1}
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-navy"
                 >
                   <span className="material-icons-outlined text-[20px]">{showPassword ? 'visibility_off' : 'visibility'}</span>
                 </button>
@@ -123,14 +118,14 @@ export default function AdminLogin() {
             </button>
           </form>
 
-          <div className="mt-6 pt-5 border-t border-white/10 text-center">
-            <Link to="/" className="text-slate-400 text-xs hover:text-white transition-colors">
+          <div className="mt-6 pt-5 border-t border-outline-variant text-center">
+            <Link to="/" className="text-navy-muted text-xs hover:text-navy transition-colors">
               ← Back to MEDNEXUS Homepage
             </Link>
           </div>
         </div>
 
-        <p className="text-center text-slate-500 text-xs mt-4">
+        <p className="text-center text-navy-muted text-xs mt-4">
           © 2024 MEDNEXUS · Secure Admin Access
         </p>
       </div>

@@ -403,7 +403,7 @@ const seedDB = async () => {
     console.log('══════════════════════════════════════════');
     console.log('\n🔑 Login credentials:');
     console.log('   Patient:  alex@mednexus.com / password123');
-    console.log('   Doctor:   sterling@mednexus.com / password123');
+    console.log('   Doctor:   richard.james@mednexus.com / password123');
     console.log('   Admin:    admin@mednexus.com / password123');
     console.log('══════════════════════════════════════════\n');
 

@@ -30,7 +30,19 @@ import AdminUsers from './pages/AdminUsers'
 import AdminDoctors from './pages/AdminDoctors'
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
-  const { user, isAuthenticated } = useAuth()
+  const { user, isAuthenticated, loading } = useAuth()
+
+  // Wait for auth check to complete before redirecting
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-surface">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+          <p className="text-navy-muted text-sm">Loading...</p>
+        </div>
+      </div>
+    )
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />
@@ -48,7 +60,19 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
 // Admin-specific protected route
 const AdminRoute = ({ children }) => {
-  const { user, isAuthenticated } = useAuth()
+  const { user, isAuthenticated, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-surface">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+          <p className="text-navy-muted text-sm">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
   if (!isAuthenticated) return <Navigate to="/admin/login" replace />
   if (user.role !== 'admin') return <Navigate to="/admin/login" replace />
   return children
